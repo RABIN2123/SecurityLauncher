@@ -10,7 +10,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         supportFragmentManager.commit {
- //           replace<GridAppFragment>(R.id.activity_home)
+            replace<GridAppFragment>(R.id.activity_home)
             setReorderingAllowed(true)
         }
     }
