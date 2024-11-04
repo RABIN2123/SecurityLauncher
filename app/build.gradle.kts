@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.securitylauncher"
+    namespace = "com.rabin2123.app"
     compileSdk = 34
 
     defaultConfig {
@@ -39,7 +39,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(project(":domain"))
 
     implementation("com.github.bumptech.glide:glide:4.12.0")
@@ -51,8 +50,8 @@ dependencies {
     val koin_version = "4.0.0"
     implementation(project.dependencies.platform("io.insert-koin:koin-bom:$koin_version"))
     implementation("io.insert-koin:koin-core")
-    implementation("io.insert-koin:koin-android:$koin_version")
-
+    implementation("io.insert-koin:koin-android")
+    implementation("io.insert-koin:koin-androidx-startup")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
