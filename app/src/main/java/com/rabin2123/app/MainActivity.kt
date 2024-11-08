@@ -10,7 +10,9 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
-import com.rabin2123.app.services.AdminReceiver
+import com.rabin2123.app.services.adminreceiver.AdminReceiver
+import com.rabin2123.app.services.filechecker.FileSystemObserverService
+import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        startForegroundService(Intent(this, FileSystemObserverService::class.java))
 
         if (devicePolicyManager.isAdminActive(myDeviceAdmin)) {
             supportFragmentManager.commit {

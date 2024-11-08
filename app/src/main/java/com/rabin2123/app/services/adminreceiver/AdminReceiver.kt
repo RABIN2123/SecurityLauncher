@@ -1,4 +1,4 @@
-package com.rabin2123.app.services
+package com.rabin2123.app.services.adminreceiver
 
 import android.app.admin.DeviceAdminReceiver
 import android.content.Context
