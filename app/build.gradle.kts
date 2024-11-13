@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.securitylauncher"
+        applicationId = "com.rabin2123.securitylauncher"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

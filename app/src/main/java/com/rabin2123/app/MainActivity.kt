@@ -1,58 +1,66 @@
 package com.rabin2123.app
 
-import android.app.admin.DevicePolicyManager
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
-import com.rabin2123.app.services.adminreceiver.AdminReceiver
+import com.rabin2123.app.services.filechecker.FileSystemObserver
 import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
+import com.rabin2123.app.utils.KioskUtil
+import org.koin.android.ext.android.get
+
 
 class MainActivity : AppCompatActivity() {
 
-    private val devicePolicyManager: DevicePolicyManager by lazy {
-        this@MainActivity.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-    }
-    private val myDeviceAdmin: ComponentName by lazy {
-        ComponentName(this@MainActivity, AdminReceiver::class.java)
+    private val kioskUtil: KioskUtil = get()
+
+    private val startupReceiverFileSystem by lazy {
+        StartupReceiverFileSystem()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        startForegroundService(Intent(this, FileSystemObserverService::class.java))
 
-        if (devicePolicyManager.isAdminActive(myDeviceAdmin)) {
+        registerReceiver(
+            startupReceiverFileSystem,
+            IntentFilter("START_FILE_OBSERVER_SERVICE"),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                RECEIVER_EXPORTED
+            } else {
+                0
+            }
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
+            requestPermissions(arrayOf(android.Manifest.permission.RECEIVE_BOOT_COMPLETED), 1)
+        }
+        if (kioskUtil.getStateAdminActive()) {
+//            startForegroundService(Intent(applicationContext, FileSystemObserverService::class.java))
+            sendBroadcast(Intent("START_FILE_OBSERVER_SERVICE").setClassName(
+                packageName,
+                "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
+            ))
             supportFragmentManager.commit {
                 replace<GridAppFragment>(R.id.activity_home)
                 setReorderingAllowed(true)
             }
         } else {
-            activateAdmin()
+            kioskUtil.setAdminPermission()
         }
+
     }
 
-    private fun activateAdmin() {
-            this@MainActivity.startActivity(
-                Intent().setComponent(
-                    ComponentName(
-                        "com.android.settings", "com.android.settings.DeviceAdminSettings"
-                    )
-                )
-            )
-        if (devicePolicyManager.isDeviceOwnerApp(this@MainActivity.packageName)){
-            val filter = IntentFilter(Intent.ACTION_MAIN)
-            filter.addCategory(Intent.CATEGORY_HOME)
-            filter.addCategory(Intent.CATEGORY_DEFAULT)
-            val activity = ComponentName(this@MainActivity, MainActivity::class.java)
-            devicePolicyManager.addPersistentPreferredActivity(myDeviceAdmin, filter, activity)
-        }
+    override fun onDestroy() {
+        unregisterReceiver(startupReceiverFileSystem)
+        super.onDestroy()
     }
+
 }

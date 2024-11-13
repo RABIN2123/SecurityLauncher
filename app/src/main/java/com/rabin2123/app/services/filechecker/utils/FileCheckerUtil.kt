@@ -24,9 +24,9 @@ internal object NotificationHelper {
     fun buildNotification(context: Context): Notification {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Notif active")
-            .setContentText("test test")
-            .setPriority(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setContentTitle("File Protector")
+            .setContentText("Work")
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
 }
