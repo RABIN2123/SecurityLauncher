@@ -1,10 +1,12 @@
-package com.rabin2123.domain
+package com.rabin2123.domain.repositoryimples
 
 import com.rabin2123.data.local.applist.AppListData
 import com.rabin2123.domain.models.AppObject
 import com.rabin2123.domain.models.toDomain
+import com.rabin2123.domain.repositoryinterfaces.LocalRepository
 
-class RepositoryImpl(private val localData: AppListData): Repository {
+class LocalRepositoryImpl(private val localData: AppListData):
+    LocalRepository {
     override suspend fun getAllAppList(): List<AppObject> {
         return localData.getAppList().toDomain()
     }

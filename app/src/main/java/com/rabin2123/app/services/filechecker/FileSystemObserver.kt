@@ -3,18 +3,26 @@ package com.rabin2123.app.services.filechecker
 import android.os.Environment
 import android.os.FileObserver
 import android.util.Log
+import com.rabin2123.app.services.filechecker.utils.HashUtils
+import com.rabin2123.domain.repositoryinterfaces.RemoteRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 
-class FileSystemObserver(path: String): FileObserver(path,CREATE or MODIFY or DELETE or MOVED_TO or MOVED_FROM or CLOSE_WRITE) {
+class FileSystemObserver(scanPath: String): FileObserver(scanPath, CLOSE_WRITE), KoinComponent {
+
+    private val remoteRepository: RemoteRepository by inject()
+
     override fun onEvent(event: Int, path: String?) {
-        Log.d("TAG!", "fileSystem")
-        when (event) {
-            CREATE -> Log.d("TAG!", "Создан новый файл: $path")
-            MODIFY -> Log.d("TAG!", "Файл изменён: $path")
-            DELETE -> Log.d("TAG!", "Файл удалён: $path")
-            MOVED_TO -> Log.d("TAG!", "Файл перемещён в директорию: $path")
-            MOVED_FROM -> Log.d("TAG!", "Файл перемещён из директории: $path")
-            CLOSE_WRITE -> Log.d("TAG!", "Загружен: $path")
+        val hash = HashUtils.getCheckSumFromFile("$DOWNLOADS_PATH/$path")
+        if(hash == HASH_OF_EMPTY_FILE) return
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        scope.launch {
+            Log.d("TAG!","Result from bazaar: ${remoteRepository.getInfoAboutHashFile(hash)}")
         }
     }
 
@@ -29,6 +37,7 @@ class FileSystemObserver(path: String): FileObserver(path,CREATE or MODIFY or DE
     }
 
     companion object {
-        val PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
+        val DOWNLOADS_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
+        const val HASH_OF_EMPTY_FILE: String = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
 }

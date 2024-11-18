@@ -36,21 +36,6 @@ class FileSystemObserverService: Service() {
         return START_STICKY
     }
 
-    override fun onTimeout(startId: Int) {
-        Log.d("TAG!", "onTimeoutService")
-        super.onTimeout(startId)
-    }
-
-    override fun stopService(name: Intent?): Boolean {
-        Log.d("TAG!", "stopService")
-        return super.stopService(name)
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        Log.d("TAG!", "onUnbindService")
-        return super.onUnbind(intent)
-    }
-
     private fun startAsForegroundService() {
         NotificationHelper.createNotificationChannel(this@FileSystemObserverService)
         Log.d("TAG!", "StartForegroundService")
@@ -66,16 +51,9 @@ class FileSystemObserverService: Service() {
         )
     }
     private fun startFileObserver() {
-        val fileObserver = FileSystemObserver(FileSystemObserver.PATH)
+        val fileObserver = FileSystemObserver(FileSystemObserver.DOWNLOADS_PATH)
         fileObserver.startWatching()
 
-    }
-
-
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        Log.d("TAG!", "onTaskRemovedService")
-        super.onTaskRemoved(rootIntent)
     }
 
     override fun onDestroy() {

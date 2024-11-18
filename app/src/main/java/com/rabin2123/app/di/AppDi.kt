@@ -10,7 +10,7 @@ import org.koin.dsl.module
 val appModule = module {
     includes(domainModule)
     viewModel<GridAppViewModel> {
-        GridAppViewModel(Repository = get())
+        GridAppViewModel(repository = get())
     }
     single<KioskUtil> { KioskUtil(context = get()) }
 }

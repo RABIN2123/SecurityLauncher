@@ -1,5 +1,6 @@
 package com.rabin2123.app
 
+import android.Manifest.permission
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
@@ -12,12 +13,16 @@ import com.rabin2123.app.services.filechecker.FileSystemObserver
 import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
 import com.rabin2123.app.utils.KioskUtil
+import com.rabin2123.domain.repositoryinterfaces.RemoteRepository
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
 
     private val kioskUtil: KioskUtil = get()
+    private val remoteRepository: RemoteRepository by inject()
+
 
     private val startupReceiverFileSystem by lazy {
         StartupReceiverFileSystem()
@@ -39,11 +44,9 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
-            requestPermissions(arrayOf(android.Manifest.permission.RECEIVE_BOOT_COMPLETED), 1)
+            requestPermissions(arrayOf(permission.POST_NOTIFICATIONS, permission.RECEIVE_BOOT_COMPLETED, permission.MANAGE_EXTERNAL_STORAGE, permission.INTERNET), 1)
         }
         if (kioskUtil.getStateAdminActive()) {
-//            startForegroundService(Intent(applicationContext, FileSystemObserverService::class.java))
             sendBroadcast(Intent("START_FILE_OBSERVER_SERVICE").setClassName(
                 packageName,
                 "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"

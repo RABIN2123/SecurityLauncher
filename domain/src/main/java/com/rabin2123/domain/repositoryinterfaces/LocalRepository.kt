@@ -1,7 +1,7 @@
-package com.rabin2123.domain
+package com.rabin2123.domain.repositoryinterfaces
 
 import com.rabin2123.domain.models.AppObject
 
-interface Repository {
+interface LocalRepository {
     suspend fun getAllAppList(): List<AppObject>
 }
