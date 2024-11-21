@@ -14,28 +14,29 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/stringFileObserverService"
+                android:id="@+id/string_file_observer_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/string_file_observer_service"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_weight="1"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/stringFileObserverService"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_weight="0.5"
-                />
+                app:layout_constraintStart_toEndOf="@+id/string_file_observer_service"
+                app:layout_constraintTop_toTopOf="parent" />
         </TableRow>
+
         <TableRow>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_weight="1"
+                android:id="@+id/global_app_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
             </androidx.recyclerview.widget.RecyclerView>
         </TableRow>
