@@ -24,6 +24,7 @@ class FileSystemObserver(scanPath: String): FileObserver(scanPath, CLOSE_WRITE),
         scope.launch {
             Log.d("TAG!","Result from bazaar: ${remoteRepository.getInfoAboutHashFile(hash)}")
         }
+        //TODO сделать отправку компании инфы об файле если он вирус 
     }
 
     override fun startWatching() {

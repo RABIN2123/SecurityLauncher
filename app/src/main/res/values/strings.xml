@@ -2,4 +2,5 @@
     <string name="app_name">SecurityLauncher</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="string_file_observer_service">Send file sample to malwareBazaar</string>
 </resources>

@@ -1,13 +1,13 @@
-package com.rabin2123.data.local.applist
+package com.rabin2123.data.local.globalapplist
 
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import com.rabin2123.data.local.applist.models.AppObjectData
+import com.rabin2123.data.local.globalapplist.models.AppObjectData
 
 
-class AppListDataImpl(private val context: Context) : AppListData {
+class GlobalAppListDataImpl(private val context: Context) : GlobalAppListData {
     override suspend fun getAppList(): List<AppObjectData> {
         val appList = mutableListOf<AppObjectData>()
         val pm = context.packageManager

@@ -9,19 +9,14 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
-import com.rabin2123.app.services.filechecker.FileSystemObserver
-import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
 import com.rabin2123.app.utils.KioskUtil
-import com.rabin2123.domain.repositoryinterfaces.RemoteRepository
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
 
     private val kioskUtil: KioskUtil = get()
-    private val remoteRepository: RemoteRepository by inject()
 
 
     private val startupReceiverFileSystem by lazy {
@@ -30,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_main)
 
 
         registerReceiver(
