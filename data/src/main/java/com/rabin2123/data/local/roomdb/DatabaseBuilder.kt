@@ -5,7 +5,7 @@ import androidx.room.Room
 
 object DatabaseBuilder {
     fun getDatabase(context: Context) = synchronized(this) {
-        Room.databaseBuilder(context, Database::class.java, "database.db").build().dao
+        Room.databaseBuilder(context, AllowedAppListDatabase::class.java, "database.db").build().dao
     }
     // TODO не хватает sqlcipher!!!
 }

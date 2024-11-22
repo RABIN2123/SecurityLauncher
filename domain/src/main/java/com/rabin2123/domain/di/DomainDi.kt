@@ -10,9 +10,14 @@ import org.koin.dsl.module
 
 val domainModule = module {
     includes(dataModule)
-    factory<LocalRepositoryForAdmin> {
+    factory {
         LocalRepositoryImpl(localDataForUser = get(), localDataForAdmin = get())
     }
+
+    factory<LocalRepositoryForAdmin> {
+        get<LocalRepositoryImpl>()
+    }
+
     factory<LocalRepositoryForUser> {
         get<LocalRepositoryImpl>()
     }

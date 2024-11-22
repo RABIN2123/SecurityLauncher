@@ -4,6 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(entities = [AllowedAppListEntity::class], version = 1)
-abstract class Database: RoomDatabase() {
+abstract class AllowedAppListDatabase: RoomDatabase() {
     abstract val dao: AllowedAppListDao
 }

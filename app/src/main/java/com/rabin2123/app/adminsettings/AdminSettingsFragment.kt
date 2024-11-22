@@ -41,14 +41,14 @@ class AdminSettingsFragment : Fragment() {
     }
 
     private fun initUi() {
-        binding?.globalAppList?.adapter = adapter
+        //binding?.globalAppList?.adapter = adapter
     }
 
     private fun dataListener() {
-        lifecycleScope.launch {
-            vm.listApp.collect() {value ->
-                adapter.submitList(value)
-            }
-        }
+//        lifecycleScope.launch {
+//            vm.listApp.collect() {value ->
+//                adapter.submitList(value)
+//            }
+//        }
     }
 }
