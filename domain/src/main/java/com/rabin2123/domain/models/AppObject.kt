@@ -1,7 +1,7 @@
 package com.rabin2123.domain.models
 
 import com.rabin2123.data.local.globalapplist.models.AppObjectData
-import com.rabin2123.data.local.roomdb.AllowedAppListEntity
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

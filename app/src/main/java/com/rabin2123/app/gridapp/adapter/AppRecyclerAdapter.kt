@@ -31,6 +31,7 @@ class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) : ListAdap
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(appObject: AppObject, onItemClicked: (String) -> Unit) {
             with(binding) {
+
                 Glide.with(root.context).load(getAppIcon(appObject.packageName, binding.root.context)).into(appIcon)
                 appName.text = appObject.name
                 itemApp.setOnClickListener {

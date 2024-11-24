@@ -23,4 +23,8 @@ class AdminSettingsViewModel(private val repository: LocalRepositoryForAdmin): V
             _listApp.update { repository.getAllAppList() }
         }
     }
+
+    fun saveLauncherSettings() {
+
+    }
 }

@@ -1,8 +1,7 @@
 package com.rabin2123.domain.repositoryimples
 
 import com.rabin2123.data.local.globalapplist.GlobalAppListData
-import com.rabin2123.data.local.roomdb.AllowedAppListEntity
-import com.rabin2123.data.local.roomdb.AllowedAppListHelper
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListHelper
 import com.rabin2123.domain.models.AppObject
 import com.rabin2123.domain.models.toData
 import com.rabin2123.domain.models.toDomain

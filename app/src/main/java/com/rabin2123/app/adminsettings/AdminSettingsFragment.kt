@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.adminsettings.adapter.GlobalAppListRecyclerAdapter
-import com.rabin2123.app.databinding.FragmentAdminSettingsBinding
+import com.rabin2123.app.databinding.FragmentLauncherSettingsBinding
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
@@ -21,8 +21,11 @@ class AdminSettingsFragment : Fragment() {
 
         )
     }
+    private val onItemClicked: () -> Unit = {
+        vm.saveLauncherSettings()
+    }
 
-    private var binding: FragmentAdminSettingsBinding? = null
+    private var binding: FragmentLauncherSettingsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +33,7 @@ class AdminSettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =
-            FragmentAdminSettingsBinding.inflate(LayoutInflater.from(context), container, false)
+            FragmentLauncherSettingsBinding.inflate(LayoutInflater.from(context), container, false)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -41,14 +44,14 @@ class AdminSettingsFragment : Fragment() {
     }
 
     private fun initUi() {
-        //binding?.globalAppList?.adapter = adapter
+        binding?.globalAppList?.adapter = adapter
     }
 
     private fun dataListener() {
-//        lifecycleScope.launch {
-//            vm.listApp.collect() {value ->
-//                adapter.submitList(value)
-//            }
-//        }
+        lifecycleScope.launch {
+            vm.listApp.collect() {value ->
+                adapter.submitList(value)
+            }
+        }
     }
 }

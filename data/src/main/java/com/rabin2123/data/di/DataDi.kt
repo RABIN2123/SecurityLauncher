@@ -2,9 +2,9 @@ package com.rabin2123.data.di
 
 import com.rabin2123.data.local.globalapplist.GlobalAppListData
 import com.rabin2123.data.local.globalapplist.GlobalAppListDataImpl
-import com.rabin2123.data.local.roomdb.AllowedAppListDao
-import com.rabin2123.data.local.roomdb.AllowedAppListHelper
-import com.rabin2123.data.local.roomdb.AllowedAppListHelperImpl
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListDao
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListHelper
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListHelperImpl
 import com.rabin2123.data.local.roomdb.DatabaseBuilder
 import com.rabin2123.data.remote.retrofit.ApiHelper
 import com.rabin2123.data.remote.retrofit.ApiHelperImpl
@@ -23,7 +23,7 @@ val dataModule = module {
         ApiHelperImpl(bazaarService = get())
     }
     single<AllowedAppListDao> {
-       DatabaseBuilder.getDatabase(context = get())
+       DatabaseBuilder.getDatabaseAllowedAppList(context = get()).dao
     }
     single<AllowedAppListHelper> {
         AllowedAppListHelperImpl(dao = get())

@@ -1,4 +1,4 @@
-package com.rabin2123.data.local.roomdb
+package com.rabin2123.data.local.roomdb.allowedapplistdb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

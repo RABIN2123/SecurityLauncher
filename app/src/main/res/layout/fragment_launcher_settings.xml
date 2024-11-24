@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/string_file_observer_service"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_file_observer_service" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2" />
+        </TableRow>
+
+        <TableRow>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/global_app_list"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/fragment_item_of_global_app_list">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/button_save_launcher_setting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="@string/save_change_button" />
+
+            <Button
+                android:id="@+id/button_exit_launcher_setting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="@string/exit_button" />
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>
