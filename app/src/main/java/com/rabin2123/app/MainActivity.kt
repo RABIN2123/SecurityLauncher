@@ -39,13 +39,22 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(permission.POST_NOTIFICATIONS, permission.RECEIVE_BOOT_COMPLETED, permission.MANAGE_EXTERNAL_STORAGE, permission.INTERNET), 1)
+            requestPermissions(
+                arrayOf(
+                    permission.POST_NOTIFICATIONS,
+                    permission.RECEIVE_BOOT_COMPLETED,
+                    permission.MANAGE_EXTERNAL_STORAGE,
+                    permission.INTERNET
+                ), 1
+            )
         }
         if (kioskUtil.getStateAdminActive()) {
-            sendBroadcast(Intent("START_FILE_OBSERVER_SERVICE").setClassName(
-                packageName,
-                "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
-            ))
+            sendBroadcast(
+                Intent("START_FILE_OBSERVER_SERVICE").setClassName(
+                    packageName,
+                    "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
+                )
+            )
             supportFragmentManager.commit {
                 replace<GridAppFragment>(R.id.activity_home)
                 setReorderingAllowed(true)

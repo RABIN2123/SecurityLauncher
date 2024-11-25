@@ -7,5 +7,6 @@ interface LocalRepositoryForAdmin {
     suspend fun getAllAppList(): List<AppObject>
     suspend fun setAllowedAppList(allowedAppList: List<AppObject>)
     suspend fun deleteAllowedAppList(allowedAppList: List<AppObject>)
+    suspend fun deleteAllAllowedAppList()
     fun getAllowedAppList(): Flow<List<AppObject>>
 }

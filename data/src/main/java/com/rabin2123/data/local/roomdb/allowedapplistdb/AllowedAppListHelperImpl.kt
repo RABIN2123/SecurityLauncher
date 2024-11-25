@@ -11,6 +11,10 @@ class AllowedAppListHelperImpl(private val dao: AllowedAppListDao): AllowedAppLi
         dao.deleteAllowedApps(allowedAppList)
     }
 
+    override suspend fun deleteAllAllowedApps() {
+        dao.deleteAllAllowedApps()
+    }
+
     override fun getAllowedApps(): Flow<List<AllowedAppListEntity>> {
         return dao.getAllowedApps()
     }

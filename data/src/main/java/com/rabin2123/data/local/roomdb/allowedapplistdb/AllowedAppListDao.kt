@@ -15,5 +15,8 @@ interface AllowedAppListDao {
     fun getAllowedApps(): Flow<List<AllowedAppListEntity>>
 
     @Delete
-    fun deleteAllowedApps(allowedAppList: List<AllowedAppListEntity>)
+    suspend fun deleteAllowedApps(allowedAppList: List<AllowedAppListEntity>)
+
+    @Query("DELETE FROM ${AllowedAppListEntity.TABLE_NAME} WHERE ${AllowedAppListEntity.COLUMN_APP_PACKAGE} NOT LIKE 'launcher_settings'")
+    suspend fun deleteAllAllowedApps()
 }

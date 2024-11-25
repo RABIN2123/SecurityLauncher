@@ -3,6 +3,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="string_file_observer_service">Send file sample to malwareBazaar</string>
+    <string name="string_block_phone_settings">Block phone settings</string>
     <string name="save_change_button">Save change</string>
     <string name="exit_button">Exit</string>
 </resources>

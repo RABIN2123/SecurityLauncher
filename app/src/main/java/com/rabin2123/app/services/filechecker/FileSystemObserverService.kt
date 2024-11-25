@@ -1,25 +1,14 @@
 package com.rabin2123.app.services.filechecker
 
-import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
-import android.os.Environment
-import android.os.FileObserver
-import android.os.FileObserver.CREATE
-import android.os.FileObserver.DELETE
-import android.os.FileObserver.MODIFY
-import android.os.FileObserver.MOVED_FROM
-import android.os.FileObserver.MOVED_TO
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
-import com.rabin2123.app.R
 import com.rabin2123.app.services.filechecker.utils.NotificationHelper
 
 class FileSystemObserverService: Service() {

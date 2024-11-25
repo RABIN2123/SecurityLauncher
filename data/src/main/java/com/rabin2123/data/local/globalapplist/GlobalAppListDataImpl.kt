@@ -31,6 +31,6 @@ class GlobalAppListDataImpl(private val context: Context) : GlobalAppListData {
                     )
                 )
         }
-        return appList;
+        return appList.distinctBy{it.packageName};
     }
 }

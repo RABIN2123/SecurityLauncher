@@ -23,6 +23,10 @@ class LocalRepositoryImpl(private val localDataForAdmin: GlobalAppListData, priv
         localDataForUser.deleteAllowedApps(allowedAppList.toData())
     }
 
+    override suspend fun deleteAllAllowedAppList() {
+        localDataForUser.deleteAllAllowedApps()
+    }
+
     override fun getAllowedAppList(): Flow<List<AppObject>> {
         return localDataForUser.getAllowedApps().toDomain()
     }

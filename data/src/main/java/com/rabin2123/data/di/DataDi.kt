@@ -10,6 +10,9 @@ import com.rabin2123.data.remote.retrofit.ApiHelper
 import com.rabin2123.data.remote.retrofit.ApiHelperImpl
 import com.rabin2123.data.remote.retrofit.services.BazaarService
 import com.rabin2123.data.remote.retrofit.RetrofitBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -23,7 +26,10 @@ val dataModule = module {
         ApiHelperImpl(bazaarService = get())
     }
     single<AllowedAppListDao> {
-       DatabaseBuilder.getDatabaseAllowedAppList(context = get()).dao
+        DatabaseBuilder.getDatabaseAllowedAppList(
+            context = get(),
+            scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        ).dao
     }
     single<AllowedAppListHelper> {
         AllowedAppListHelperImpl(dao = get())

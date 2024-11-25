@@ -10,15 +10,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.rabin2123.app.R
 import com.rabin2123.app.databinding.FragmentIconAppBinding
 import com.rabin2123.domain.models.AppObject
 
 
-class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) : ListAdapter<AppObject, AppRecyclerAdapter.MyViewHolder>(
-    ItemDiffCallBack()
-) {
+class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) :
+    ListAdapter<AppObject, AppRecyclerAdapter.MyViewHolder>(
+        ItemDiffCallBack()
+    ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = FragmentIconAppBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            FragmentIconAppBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 
@@ -31,14 +34,20 @@ class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) : ListAdap
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(appObject: AppObject, onItemClicked: (String) -> Unit) {
             with(binding) {
-
-                Glide.with(root.context).load(getAppIcon(appObject.packageName, binding.root.context)).into(appIcon)
+                    Glide.with(root.context)
+                        .load(
+                            if (appObject.packageName != "launcher_settings") getAppIcon(
+                                appObject.packageName,
+                                binding.root.context
+                            ) else R.mipmap.ic_launcher_settings_round
+                        ).into(appIcon)
+                    itemApp.setOnClickListener {
+                        onItemClicked(appObject.packageName)
+                    }
                 appName.text = appObject.name
-                itemApp.setOnClickListener {
-                    onItemClicked(appObject.packageName)
-                }
             }
         }
+
         private fun getAppIcon(packageName: String, context: Context): Drawable {
             val pm = context.packageManager
             val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -49,7 +58,6 @@ class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) : ListAdap
             return appInfo.loadIcon(pm)
         }
     }
-
 
 
     class ItemDiffCallBack : DiffUtil.ItemCallback<AppObject>() {
