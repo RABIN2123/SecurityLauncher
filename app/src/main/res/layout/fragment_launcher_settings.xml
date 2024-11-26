@@ -41,6 +41,64 @@
                 android:paddingEnd="10dp" />
         </TableRow>
 
+        <TableRow>
+
+            <TextView
+
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_block_gps" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_block_gps"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:paddingEnd="10dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_block_usb_access" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_block_usb_access"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:paddingEnd="10dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_block_camera" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_block_camera"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:paddingEnd="10dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/string_password_for_launcher_settings" />
+            <Button
+                android:id="@+id/button_change_admin_password"
+                android:text="change"
+                />
+        </TableRow>
+
 
         <TableRow>
 

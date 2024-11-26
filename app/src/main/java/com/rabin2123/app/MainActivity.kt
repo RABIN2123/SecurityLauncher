@@ -10,13 +10,13 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
-import com.rabin2123.app.utils.KioskUtil
+import com.rabin2123.app.utils.AdminUtils
 import org.koin.android.ext.android.get
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val kioskUtil: KioskUtil = get()
+    private val adminUtils: AdminUtils = get()
 
 
     private val startupReceiverFileSystem by lazy {
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 ), 1
             )
         }
-        if (kioskUtil.getStateAdminActive()) {
+        if (adminUtils.getStateAdminActive()) {
             sendBroadcast(
                 Intent("START_FILE_OBSERVER_SERVICE").setClassName(
                     packageName,
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 setReorderingAllowed(true)
             }
         } else {
-            kioskUtil.setAdminPermission()
+            adminUtils.setAdminPermission()
         }
 
     }

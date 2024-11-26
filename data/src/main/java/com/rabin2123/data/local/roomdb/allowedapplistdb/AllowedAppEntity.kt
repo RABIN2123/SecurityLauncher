@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = AllowedAppListEntity.TABLE_NAME)
-data class AllowedAppListEntity (
+@Entity(tableName = AllowedAppEntity.TABLE_NAME)
+data class AllowedAppEntity (
     @PrimaryKey
     @ColumnInfo(name = COLUMN_APP_PACKAGE) val packageName: String,
     @ColumnInfo(name = COLUMN_APP_NAME) val appName: String

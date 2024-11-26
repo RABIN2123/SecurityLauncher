@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rabin2123.app.adminsettings.models.AppObjectWithCheckBox
 import com.rabin2123.app.databinding.FragmentItemOfGlobalAppListBinding
-import com.rabin2123.domain.models.AppObject
 
 class GlobalAppListRecyclerAdapter() :
     ListAdapter<AppObjectWithCheckBox, GlobalAppListRecyclerAdapter.MyViewHolder>(ItemDiffCallBack()) {

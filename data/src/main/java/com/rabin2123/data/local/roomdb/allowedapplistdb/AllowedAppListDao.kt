@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AllowedAppListDao {
     @Insert
-    suspend fun insertAllowedApps(allowedAppList: List<AllowedAppListEntity>)
+    suspend fun insertAllowedApps(allowedAppList: List<AllowedAppEntity>)
 
-    @Query("SELECT * FROM ${AllowedAppListEntity.TABLE_NAME} ORDER BY ${AllowedAppListEntity.COLUMN_APP_NAME}")
-    fun getAllowedApps(): Flow<List<AllowedAppListEntity>>
+    @Query("SELECT * FROM ${AllowedAppEntity.TABLE_NAME} ORDER BY ${AllowedAppEntity.COLUMN_APP_NAME}")
+    fun getAllowedApps(): Flow<List<AllowedAppEntity>>
 
     @Delete
-    suspend fun deleteAllowedApps(allowedAppList: List<AllowedAppListEntity>)
+    suspend fun deleteAllowedApps(allowedAppList: List<AllowedAppEntity>)
 
-    @Query("DELETE FROM ${AllowedAppListEntity.TABLE_NAME} WHERE ${AllowedAppListEntity.COLUMN_APP_PACKAGE} NOT LIKE 'launcher_settings'")
+    @Query("DELETE FROM ${AllowedAppEntity.TABLE_NAME} WHERE ${AllowedAppEntity.COLUMN_APP_PACKAGE} != 'launcher_settings'")
     suspend fun deleteAllAllowedApps()
 }

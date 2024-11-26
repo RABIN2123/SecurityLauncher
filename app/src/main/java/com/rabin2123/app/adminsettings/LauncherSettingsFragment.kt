@@ -8,14 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.adminsettings.adapter.GlobalAppListRecyclerAdapter
 import com.rabin2123.app.databinding.FragmentLauncherSettingsBinding
-import com.rabin2123.app.utils.KioskUtil
+import com.rabin2123.domain.models.SettingsObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.get
 
 class LauncherSettingsFragment : Fragment() {
-
-    private val kioskUtil: KioskUtil = get()
 
     private val vm: LauncherSettingsViewModel by viewModel()
 
@@ -40,29 +37,49 @@ class LauncherSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        dataListener()
+        dataObserver()
+        switchStateObserver()
     }
 
     private fun initUi() {
         binding?.apply {
             globalAppList.adapter = adapter
             buttonSaveLauncherSetting.setOnClickListener {
-                vm.saveLauncherSettings(adapter.getAllowedAppList())
-                if(switchBlockPhoneSettings.isChecked) {
-                    kioskUtil.blockApps(arrayOf("com.android.settings"), true)
-                } else {
-                    kioskUtil.blockApps(arrayOf("com.android.settings"), false)
-                }
+                val settings = SettingsObject(
+                    sendToMlBazaar = switchFileObserverService.isChecked,
+                    blockSettings = switchBlockPhoneSettings.isChecked,
+                    blockGps = switchBlockGps.isChecked,
+                    blockUsb = switchBlockUsbAccess.isChecked,
+                    blockCamera = switchBlockCamera.isChecked
+                )
+                vm.saveLauncherSettings(settings, adapter.getAllowedAppList())
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             buttonExitLauncherSetting.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
         }
     }
 
-    private fun dataListener() {
+    private fun dataObserver() {
         lifecycleScope.launch {
-            vm.listApp.collect() { value ->
+            vm.listApp.collect { value ->
                 adapter.submitList(value)
+            }
+        }
+    }
+
+    private fun switchStateObserver() {
+        lifecycleScope.launch {
+            vm.settingList.collect { data ->
+                data?.apply {
+                    binding?.apply {
+                        switchFileObserverService.isChecked = sendToMlBazaar
+                        switchBlockPhoneSettings.isChecked = blockSettings
+                            switchBlockGps.isChecked = blockGps
+                            switchBlockUsbAccess.isChecked = blockUsb
+                            switchBlockCamera.isChecked = blockCamera
+                    }
+                }
+
             }
         }
     }

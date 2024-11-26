@@ -3,8 +3,8 @@ package com.rabin2123.data.local.roomdb.allowedapplistdb
 import kotlinx.coroutines.flow.Flow
 
 interface AllowedAppListHelper {
-    suspend fun insertAllowedApps(allowedAppList: List<AllowedAppListEntity>)
-    suspend fun deleteAllowedApps(allowedAppList: List<AllowedAppListEntity>)
+    suspend fun insertAllowedApps(allowedAppList: List<AllowedAppEntity>)
+    suspend fun deleteAllowedApps(allowedAppList: List<AllowedAppEntity>)
     suspend fun deleteAllAllowedApps()
-    fun getAllowedApps(): Flow<List<AllowedAppListEntity>>
+    fun getAllowedApps(): Flow<List<AllowedAppEntity>>
 }

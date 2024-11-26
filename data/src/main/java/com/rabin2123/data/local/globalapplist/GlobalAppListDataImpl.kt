@@ -27,10 +27,9 @@ class GlobalAppListDataImpl(private val context: Context) : GlobalAppListData {
                     AppObjectData(
                         name = resolveInfo.activityInfo.applicationInfo.loadLabel(pm).toString(),
                         packageName = resolveInfo.activityInfo.packageName.toString(),
-//                        icon = resolveInfo.activityInfo.loadIcon(pm)
                     )
                 )
         }
-        return appList.distinctBy{it.packageName};
+        return appList.distinctBy { it.packageName };
     }
 }

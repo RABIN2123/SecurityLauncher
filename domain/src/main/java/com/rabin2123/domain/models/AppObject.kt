@@ -1,7 +1,7 @@
 package com.rabin2123.domain.models
 
 import com.rabin2123.data.local.globalapplist.models.AppObjectData
-import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListEntity
+import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -19,7 +19,7 @@ fun List<AppObjectData>.toDomain(): List<AppObject> {
     }
 }
 
-fun Flow<List<AllowedAppListEntity>>.toDomain(): Flow<List<AppObject>> {
+fun Flow<List<AllowedAppEntity>>.toDomain(): Flow<List<AppObject>> {
     return this.map { flow ->
         flow.map { data ->
             AppObject(
@@ -30,9 +30,9 @@ fun Flow<List<AllowedAppListEntity>>.toDomain(): Flow<List<AppObject>> {
     }
 }
 
-fun List<AppObject>.toData(): List<AllowedAppListEntity> {
+fun List<AppObject>.toData(): List<AllowedAppEntity> {
     return this.map { data ->
-        AllowedAppListEntity(
+        AllowedAppEntity(
             packageName = data.packageName,
             appName = data.name
         )
