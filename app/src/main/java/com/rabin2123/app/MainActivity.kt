@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
+import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
 import com.rabin2123.app.utils.AdminUtils
 import org.koin.android.ext.android.get
@@ -49,12 +50,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
         if (adminUtils.getStateAdminActive()) {
-            sendBroadcast(
-                Intent("START_FILE_OBSERVER_SERVICE").setClassName(
-                    packageName,
-                    "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
-                )
-            )
             supportFragmentManager.commit {
                 replace<GridAppFragment>(R.id.activity_home)
                 setReorderingAllowed(true)

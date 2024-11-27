@@ -7,7 +7,9 @@ import android.util.Log
 
 class StartupReceiverFileSystem: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("TAG!", "BroadcastReceiverStart")
-        context?.startForegroundService(Intent(context.applicationContext, FileSystemObserverService::class.java))
+        Log.d("TAG!", "StartupReceiverFilesystem: ${intent?.action}")
+        context?.startForegroundService(Intent(context.applicationContext, FileSystemObserverService::class.java).also {
+            it.action = intent?.action
+        })
     }
 }

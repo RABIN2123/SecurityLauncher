@@ -15,6 +15,8 @@ class AdminReceiver : DeviceAdminReceiver(), KoinComponent {
         adminUtil.setAppHowLauncher()
     }
 
+
+
     override fun onDisabled(context: Context, intent: Intent) {
         adminUtil.unsetAppHowLauncher()
     }

@@ -17,12 +17,19 @@ class FileSystemObserverService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when(intent?.action) {
+            Actions.START.toString() -> start()
+            Actions.STOP.toString() -> stopSelf()
+        }
+        return START_STICKY
+    }
+
+    private fun start() {
         startAsForegroundService()
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             startFileObserver()
         }, 30000)
-        return START_STICKY
     }
 
     private fun startAsForegroundService() {
@@ -47,7 +54,11 @@ class FileSystemObserverService: Service() {
 
     override fun onDestroy() {
         Log.d("TAG!", "onDestroyService")
-        sendBroadcast(Intent("START_FILE_OBSERVER_SERVICE"))
+        sendBroadcast(Intent(Actions.START.toString()))
         super.onDestroy()
+    }
+
+    enum class Actions {
+        START, STOP
     }
 }

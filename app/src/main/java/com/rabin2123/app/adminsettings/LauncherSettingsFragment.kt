@@ -1,5 +1,6 @@
 package com.rabin2123.app.adminsettings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.adminsettings.adapter.GlobalAppListRecyclerAdapter
 import com.rabin2123.app.databinding.FragmentLauncherSettingsBinding
+import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.domain.models.SettingsObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
@@ -52,6 +54,18 @@ class LauncherSettingsFragment : Fragment() {
                     blockUsb = switchBlockUsbAccess.isChecked,
                     blockCamera = switchBlockCamera.isChecked
                 )
+                root.context?.sendBroadcast(
+                    context?.packageName?.let { packageName ->
+                        Intent(
+                            if (settings.sendToMlBazaar) FileSystemObserverService.Actions.START.toString()
+                            else FileSystemObserverService.Actions.STOP.toString()
+                        )
+//                            .setClassName(
+//                                packageName,
+//                                "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
+//                            )
+                    }
+                )
                 vm.saveLauncherSettings(settings, adapter.getAllowedAppList())
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
@@ -74,9 +88,9 @@ class LauncherSettingsFragment : Fragment() {
                     binding?.apply {
                         switchFileObserverService.isChecked = sendToMlBazaar
                         switchBlockPhoneSettings.isChecked = blockSettings
-                            switchBlockGps.isChecked = blockGps
-                            switchBlockUsbAccess.isChecked = blockUsb
-                            switchBlockCamera.isChecked = blockCamera
+                        switchBlockGps.isChecked = blockGps
+                        switchBlockUsbAccess.isChecked = blockUsb
+                        switchBlockCamera.isChecked = blockCamera
                     }
                 }
 

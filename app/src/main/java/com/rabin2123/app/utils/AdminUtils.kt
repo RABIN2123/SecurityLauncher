@@ -5,8 +5,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.UserManager
 import android.provider.Settings
+import android.util.Log
 import com.rabin2123.app.MainActivity
 import com.rabin2123.app.services.adminreceiver.AdminReceiver
 
@@ -35,10 +37,15 @@ class AdminUtils(private val context: Context) {
             filter.addCategory(Intent.CATEGORY_DEFAULT)
             val activity = ComponentName(context, MainActivity::class.java)
             devicePolicyManager.addPersistentPreferredActivity(myDeviceAdmin, filter, activity)
+            devicePolicyManager.addUserRestriction(
+                myDeviceAdmin,
+                UserManager.DISALLOW_USER_SWITCH
+            )
         }
     }
 
     fun unsetAppHowLauncher() {
+        Log.d("TAG!", "unsetAppHowLauncher")
 
     }
 
@@ -54,11 +61,26 @@ class AdminUtils(private val context: Context) {
 
     fun blockGps(state: Boolean) {
         if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
-            devicePolicyManager.setSecureSetting(
-                myDeviceAdmin,
-                Settings.Secure.LOCATION_MODE,
-                if (state) Settings.Secure.LOCATION_MODE_OFF.toString() else null
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                devicePolicyManager.setLocationEnabled(myDeviceAdmin, !state)
+            } else {
+                devicePolicyManager.setSecureSetting(
+                    myDeviceAdmin,
+                    Settings.Secure.LOCATION_MODE,
+                    if (state) Settings.Secure.LOCATION_MODE_OFF.toString() else null
+                )
+            }
+            if (state) {
+                devicePolicyManager.addUserRestriction(
+                    myDeviceAdmin,
+                    UserManager.DISALLOW_SHARE_LOCATION
+                )
+            } else {
+                devicePolicyManager.clearUserRestriction(
+                    myDeviceAdmin,
+                    UserManager.DISALLOW_SHARE_LOCATION
+                )
+            }
         }
     }
 

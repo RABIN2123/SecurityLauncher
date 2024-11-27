@@ -11,6 +11,7 @@ class GlobalAppListDataImpl(private val context: Context) : GlobalAppListData {
     override suspend fun getAppList(): List<AppObjectData> {
         val appList = mutableListOf<AppObjectData>()
         val pm = context.packageManager
+
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -21,6 +22,7 @@ class GlobalAppListDataImpl(private val context: Context) : GlobalAppListData {
         } else {
             pm.queryIntentActivities(intent, 0)
         }
+
         resolveInfos.forEach { resolveInfo ->
             if (resolveInfo.activityInfo.packageName.toString() != context.packageName)
                 appList.add(

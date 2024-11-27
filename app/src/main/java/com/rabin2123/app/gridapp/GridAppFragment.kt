@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.R
 import com.rabin2123.app.adminsettings.LauncherSettingsFragment
+import com.rabin2123.app.databinding.DialogLoginWindowBinding
 import com.rabin2123.app.databinding.FragmentGridAppBinding
 import com.rabin2123.app.gridapp.adapter.AppRecyclerAdapter
 import kotlinx.coroutines.launch
@@ -39,9 +40,14 @@ class GridAppFragment : Fragment() {
         }
     }
 
+    private fun callDialog() {
+        val dialogBinding = DialogLoginWindowBinding.inflate(layoutInflater).apply {
+
+        }
+    }
+
 
     private var binding: FragmentGridAppBinding? = null
-
 
 
     override fun onCreateView(

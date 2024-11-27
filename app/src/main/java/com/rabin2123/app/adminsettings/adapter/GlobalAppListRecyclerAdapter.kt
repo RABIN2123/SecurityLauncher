@@ -34,7 +34,7 @@ class GlobalAppListRecyclerAdapter() :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(appObject: AppObjectWithCheckBox) {
             with(binding) {
-                appName.text = appObject.packageName
+                appName.text = appObject.name
                 checkboxApp.isChecked = appObject.isChecked
                 checkedStates.put(position, appObject.isChecked)
                 checkboxApp.setOnCheckedChangeListener { _, isChecked ->
