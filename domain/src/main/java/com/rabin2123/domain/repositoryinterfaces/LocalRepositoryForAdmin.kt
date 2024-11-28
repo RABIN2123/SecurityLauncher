@@ -13,5 +13,5 @@ interface LocalRepositoryForAdmin {
     suspend fun getSettingsList(): SettingsObject
     suspend fun updateSettingsList(settingsList: SettingsObject)
     suspend fun setAdminPassword(password: String)
-    suspend fun getAdminPassword(): String
+    suspend fun checkAdminPassword(password: String): Boolean
 }

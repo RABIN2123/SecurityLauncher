@@ -3,14 +3,21 @@ package com.rabin2123.data.local.roomdb.allowedapplistdb
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.security.crypto.MasterKey
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.rabin2123.data.encryption.helper.EncryptionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.sqlcipher.database.SupportFactory
 
 object AllowedAppDatabaseBuilder {
     @Volatile
     private var INSTANCE: AllowedAppListDatabase? = null
-    fun getDatabaseAllowedAppList(context: Context, scope: CoroutineScope) =
+    fun getDatabaseAllowedAppList(
+        context: Context,
+        scope: CoroutineScope,
+        encryption: EncryptionHelper
+    ) =
         INSTANCE ?: synchronized(this) {
             val instance = Room
                 .databaseBuilder(

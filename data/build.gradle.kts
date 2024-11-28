@@ -43,6 +43,8 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("net.zetetic:android-database-sqlcipher:4.4.3")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

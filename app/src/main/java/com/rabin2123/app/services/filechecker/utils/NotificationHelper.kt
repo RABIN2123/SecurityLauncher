@@ -16,7 +16,7 @@ internal object NotificationHelper {
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             "file_checker_channel",
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_LOW
         )
         notificationManager.createNotificationChannel(channel)
     }

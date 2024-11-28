@@ -41,10 +41,11 @@ class LocalRepositoryImpl(private val localDataForAdmin: LocalDataForAdmin, priv
     }
 
     override suspend fun setAdminPassword(password: String) {
-        localDataForAdmin.setAdminPassword(password)
+        localDataForAdmin.setAdminPassword(localDataForAdmin.encryptPassword(password))
     }
 
-    override suspend fun getAdminPassword(): String {
+    override suspend fun checkAdminPassword(password: String): Boolean {
         return localDataForAdmin.getAdminPassword()
+            .contentEquals(localDataForAdmin.encryptPassword(password))
     }
 }

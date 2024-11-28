@@ -3,12 +3,13 @@ package com.rabin2123.data.local.roomdb.allowedapplistdb
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AllowedAppListDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllowedApps(allowedAppList: List<AllowedAppEntity>)
 
     @Query("SELECT * FROM ${AllowedAppEntity.TABLE_NAME} ORDER BY ${AllowedAppEntity.COLUMN_APP_NAME}")

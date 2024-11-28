@@ -12,6 +12,16 @@ import android.util.Log
 import com.rabin2123.app.MainActivity
 import com.rabin2123.app.services.adminreceiver.AdminReceiver
 
+
+private const val TAG = "AdminUtils"
+
+sealed interface SettingsEvent {
+    class BlockApps(val appList: Array<String>, val state: Boolean) : SettingsEvent
+    class BlockGps(val state: Boolean) : SettingsEvent
+    class BlockUsb(val state: Boolean) : SettingsEvent
+    class BlockCamera(val state: Boolean) : SettingsEvent
+}
+
 class AdminUtils(private val context: Context) {
     private val devicePolicyManager: DevicePolicyManager by lazy {
         context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
@@ -54,13 +64,26 @@ class AdminUtils(private val context: Context) {
         return devicePolicyManager.isAdminActive(myDeviceAdmin)
     }
 
-    fun blockApps(appList: Array<String>, state: Boolean) {
-        if (devicePolicyManager.isDeviceOwnerApp(context.packageName))
-            devicePolicyManager.setPackagesSuspended(myDeviceAdmin, appList, state)
+    fun onEvent(event: SettingsEvent): Boolean {
+        if (!devicePolicyManager.isDeviceOwnerApp(context.packageName)) return false
+        return when (event) {
+            is SettingsEvent.BlockApps -> blockApps(event.appList, event.state)
+            is SettingsEvent.BlockGps -> blockGps(event.state)
+            is SettingsEvent.BlockUsb -> blockUsb(event.state)
+            is SettingsEvent.BlockCamera -> blockCamera(event.state)
+        }
     }
 
-    fun blockGps(state: Boolean) {
-        if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
+    private fun blockApps(appList: Array<String>, state: Boolean): Boolean {
+        return devicePolicyManager.setPackagesSuspended(
+            myDeviceAdmin,
+            appList,
+            state
+        ).isEmpty()
+    }
+
+    private fun blockGps(state: Boolean): Boolean {
+        try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 devicePolicyManager.setLocationEnabled(myDeviceAdmin, !state)
             } else {
@@ -81,11 +104,15 @@ class AdminUtils(private val context: Context) {
                     UserManager.DISALLOW_SHARE_LOCATION
                 )
             }
+            return true
+        } catch (ex: Exception) {
+            Log.d(TAG, "BlockGPS($state): $ex")
+            return false
         }
     }
 
-    fun blockUsb(state: Boolean) {
-        if (devicePolicyManager.isDeviceOwnerApp(context.packageName))
+    private fun blockUsb(state: Boolean): Boolean {
+        try {
             if (state) {
                 devicePolicyManager.addUserRestriction(
                     myDeviceAdmin,
@@ -97,11 +124,20 @@ class AdminUtils(private val context: Context) {
                     UserManager.DISALLOW_USB_FILE_TRANSFER
                 )
             }
+            return true
+        } catch (ex: Exception) {
+            Log.d(TAG, "BlockUsb($state): $ex")
+            return false
+        }
     }
 
-    fun blockCamera(state: Boolean) {
-        if (devicePolicyManager.isDeviceOwnerApp(context.packageName))
+    private fun blockCamera(state: Boolean): Boolean {
+        try {
             devicePolicyManager.setCameraDisabled(myDeviceAdmin, state)
+            return true
+        } catch (ex: Exception) {
+            Log.d(TAG, "BlockCamera($state): $ex")
+            return false
+        }
     }
-
 }

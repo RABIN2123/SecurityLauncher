@@ -9,7 +9,6 @@ import android.os.Bundle
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.rabin2123.app.gridapp.GridAppFragment
-import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.services.filechecker.StartupReceiverFileSystem
 import com.rabin2123.app.utils.AdminUtils
 import org.koin.android.ext.android.get

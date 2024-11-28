@@ -1,6 +1,8 @@
 package com.rabin2123.data.local.sharedprefs
 
 import android.content.SharedPreferences
+import com.rabin2123.data.encryption.encodeToString
+import com.rabin2123.data.encryption.toBase64
 
 internal operator fun SharedPreferences.set(key: String, value: Any?) {
     when (value) {
@@ -9,6 +11,7 @@ internal operator fun SharedPreferences.set(key: String, value: Any?) {
         is Boolean -> edit { it.putBoolean(key, value) }
         is Float -> edit { it.putFloat(key, value) }
         is Long -> edit { it.putLong(key, value) }
+        is ByteArray -> edit {it.putString(key, value.encodeToString())}
         else -> throw UnsupportedOperationException("Not yet implemented")
     }
 }
@@ -29,6 +32,7 @@ internal inline operator fun <reified T : Any?> SharedPreferences.get(
         Boolean::class -> getBoolean(key, defaultValue as? Boolean ?: false) as T
         Float::class -> getFloat(key, defaultValue as? Float ?: -1f) as T
         Long::class -> getLong(key, defaultValue as? Long ?: -1) as T
+        ByteArray::class -> getString(key, defaultValue as? String)?.toBase64() as T
         else -> throw UnsupportedOperationException("Not yet implemented")
     }
 }

@@ -1,11 +1,13 @@
 package com.rabin2123.app.adminsettings
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rabin2123.app.adminsettings.models.AppObjectWithCheckBox
 import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.utils.AdminUtils
+import com.rabin2123.app.utils.SettingsEvent
 import com.rabin2123.domain.models.AppObject
 import com.rabin2123.domain.models.SettingsObject
 import com.rabin2123.domain.repositoryinterfaces.LocalRepositoryForAdmin
@@ -55,8 +57,10 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
 
     fun saveLauncherSettings(
         settings: SettingsObject,
-        allowedAppList: List<AppObjectWithCheckBox>
+        allowedAppList: List<AppObjectWithCheckBox>,
+        applicationContext: Context
     ) {
+        setSettings(settings, applicationContext)
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateSettingsList(settings)
             repository.deleteAllAllowedAppList()
@@ -68,13 +72,44 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
                 )
             })
         }
-        setSettings(settings)
     }
 
-    private fun setSettings(settings: SettingsObject) {
-        adminUtils.blockApps(arrayOf("com.android.settings"), settings.blockSettings)
-        adminUtils.blockGps(settings.blockGps)
-        adminUtils.blockUsb(settings.blockUsb)
-        adminUtils.blockCamera(settings.blockCamera)
+    private fun setSettings(
+        newSettings: SettingsObject,
+        applicationContext: Context
+    ) {
+        _settingsList.value?.let { oldSettings ->
+            if (newSettings.sendToMlBazaar != oldSettings.sendToMlBazaar) {
+                applicationContext.sendBroadcast(
+                    Intent(
+                        if (newSettings.sendToMlBazaar) FileSystemObserverService.Actions.START.toString()
+                        else FileSystemObserverService.Actions.STOP.toString()
+                    )
+                        .setClassName(
+                            applicationContext.packageName,
+                            "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
+                        )
+                )
+            }
+            if (newSettings.blockSettings != oldSettings.blockSettings) {
+                adminUtils.onEvent(
+                    SettingsEvent.BlockApps(
+                        arrayOf("com.android.settings"),
+                        newSettings.blockSettings
+                    )
+                )
+            } else {
+                oldSettings.blockSettings
+            }
+            if (newSettings.blockGps != oldSettings.blockGps) {
+                adminUtils.onEvent(SettingsEvent.BlockGps(newSettings.blockGps))
+            }
+            if (newSettings.blockUsb != oldSettings.blockUsb) {
+                adminUtils.onEvent(SettingsEvent.BlockUsb(newSettings.blockUsb))
+            }
+            if (newSettings.blockCamera != oldSettings.blockCamera) {
+                adminUtils.onEvent(SettingsEvent.BlockCamera(newSettings.blockCamera))
+            }
+        }
     }
 }

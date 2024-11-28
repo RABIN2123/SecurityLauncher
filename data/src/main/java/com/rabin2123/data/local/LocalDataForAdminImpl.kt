@@ -3,7 +3,7 @@ package com.rabin2123.data.local
 import com.rabin2123.data.local.globalapplist.GlobalAppListData
 import com.rabin2123.data.local.globalapplist.models.AppObjectData
 import com.rabin2123.data.local.sharedprefs.models.SettingsData
-import com.rabin2123.data.local.sharedprefs.SettingsPrefs
+import com.rabin2123.data.local.sharedprefs.settingsprefs.SettingsPrefs
 
 class LocalDataForAdminImpl(
     private val globalAppList: GlobalAppListData,
@@ -21,11 +21,15 @@ class LocalDataForAdminImpl(
         return settingsDb.getSettingsList()
     }
 
-    override suspend fun getAdminPassword(): String {
+    override suspend fun getAdminPassword(): ByteArray {
         return settingsDb.getAdminPassword()
     }
 
-    override suspend fun setAdminPassword(password: String) {
+    override suspend fun setAdminPassword(password: ByteArray) {
         settingsDb.setAdminPassword(password)
+    }
+
+    override suspend fun encryptPassword(password: String): ByteArray {
+        return settingsDb.encryptPassword(password)
     }
 }

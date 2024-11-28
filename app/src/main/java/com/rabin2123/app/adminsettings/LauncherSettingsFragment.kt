@@ -54,19 +54,7 @@ class LauncherSettingsFragment : Fragment() {
                     blockUsb = switchBlockUsbAccess.isChecked,
                     blockCamera = switchBlockCamera.isChecked
                 )
-                root.context?.sendBroadcast(
-                    context?.packageName?.let { packageName ->
-                        Intent(
-                            if (settings.sendToMlBazaar) FileSystemObserverService.Actions.START.toString()
-                            else FileSystemObserverService.Actions.STOP.toString()
-                        )
-//                            .setClassName(
-//                                packageName,
-//                                "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
-//                            )
-                    }
-                )
-                vm.saveLauncherSettings(settings, adapter.getAllowedAppList())
+                vm.saveLauncherSettings(settings, adapter.getAllowedAppList(), requireContext().applicationContext)
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             buttonExitLauncherSetting.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
