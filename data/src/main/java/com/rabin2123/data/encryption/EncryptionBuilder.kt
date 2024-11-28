@@ -4,7 +4,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.KeyProperties.BLOCK_MODE_CBC
 import android.util.Base64
-import com.rabin2123.data.encryption.prefs.EncryptionDataPrefs
+import com.rabin2123.data.local.sharedprefs.encryptionprefs.EncryptionPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.security.KeyStore
@@ -17,7 +17,7 @@ import javax.crypto.spec.IvParameterSpec
 private const val IV_SIZE = 16
 
 class EncryptionBuilder(
-    private val prefs: EncryptionDataPrefs,
+    private val prefs: EncryptionPrefs,
     private val scope: CoroutineScope
 ): AesEncryption {
 
@@ -25,12 +25,12 @@ class EncryptionBuilder(
         load(null)
     }
     private var aesKeyAlias = ""
-    private var ivBytes: ByteArray? = null
+    private var ivPrefs: ByteArray? = null
 
     init {
         scope.launch {
             aesKeyAlias = prefs.getAesKeyAlias()
-            ivBytes = prefs.getKeyIv().toBase64()
+            ivPrefs = prefs.getKeyIv()
         }
     }
 
@@ -66,25 +66,28 @@ class EncryptionBuilder(
     }
 
     private fun getIv(): IvParameterSpec {
-        return if (ivBytes != null) {
-            IvParameterSpec(ivBytes)
+        return if (ivPrefs != null) {
+            IvParameterSpec(ivPrefs)
         } else {
-            ivBytes = ByteArray(IV_SIZE)
-            SecureRandom().nextBytes(ivBytes)
+            val generatedIv = generateIv()
             scope.launch {
-                prefs.setKeyIv(ivBytes!!.encodeToString())
+                prefs.setKeyIv(generatedIv.iv)
             }
-
-            IvParameterSpec(ivBytes)
+            generatedIv
         }
     }
+    private fun generateIv(): IvParameterSpec {
+        val ivBytes = ByteArray(IV_SIZE)
+        SecureRandom().nextBytes(ivBytes)
+        return IvParameterSpec(ivBytes)
+    }
 
-    override suspend fun decrypt(encryptPassword: ByteArray): String {
+    override suspend fun decrypt(encryptedPassword: ByteArray): String {
         val key = getKey()
         val iv = getIv()
         val cipher = Cipher.getInstance(TRANSFORMATION, "AndroidKeyStoreBCWorkaround")
         cipher.init(Cipher.DECRYPT_MODE, key, iv)
-        return cipher.doFinal(encryptPassword).encodeToString()
+        return cipher.doFinal(encryptedPassword).encodeToString()
     }
 
     companion object {

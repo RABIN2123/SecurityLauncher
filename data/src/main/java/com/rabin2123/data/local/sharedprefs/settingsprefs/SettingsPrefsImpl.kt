@@ -36,23 +36,11 @@ class SettingsPrefsImpl(
         prefs[SettingsData.ADMIN_PASSWORD] = password
     }
 
-    override suspend fun getAesKeyAlias(): String {
-        return prefs[SettingsPrefsBuilder.AES_KEY_ALIAS]
-    }
-
     override suspend fun encryptPassword(password: String): ByteArray {
         return encryption.encryptionPassword(password)
     }
 
     override suspend fun decryptPassword(password: ByteArray): String {
         return encryption.decryptionPassword(password)
-    }
-
-    override suspend fun getIv(): String {
-        return prefs[SettingsPrefsBuilder.IV_KEY]
-    }
-
-    override suspend fun setIv(iv: String) {
-        prefs[SettingsPrefsBuilder.IV_KEY] = iv
     }
 }

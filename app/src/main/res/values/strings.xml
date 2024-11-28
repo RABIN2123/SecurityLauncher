@@ -16,4 +16,6 @@
     <string name="hint_string_old_password">Input old password</string>
     <string name="string_new_password">New password</string>
     <string name="hint_string_new_password">Input new password</string>
+    <string name="string_login">Login</string>
+    <string name="string_cancel">Cancel</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.rabin2123.app.gridapp
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,19 +32,33 @@ class GridAppFragment : Fragment() {
             if (launchAppIntent != null)
                 startActivity(launchAppIntent)
         } else {
-            val fragmentManager = requireActivity().supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.apply {
-                replace(R.id.activity_home, LauncherSettingsFragment())
-                addToBackStack(null)
-                commit()
-            }
+            callDialog()
+            //openSettings()
         }
     }
 
     private fun callDialog() {
-        val dialogBinding = DialogLoginWindowBinding.inflate(layoutInflater).apply {
+        val dialog = AlertDialog.Builder(requireContext())
+        val binding = DialogLoginWindowBinding.inflate(layoutInflater).apply {
+            buttonLogin.setOnClickListener {
+                vm.checkPassword(editTextPassword.text.toString())
+            }
+            buttonCancel.setOnClickListener {
 
+            }
+
+        }
+        dialog.setView(binding.root).create()
+        dialog.show()
+    }
+
+    private fun openSettings() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.apply {
+            replace(R.id.activity_home, LauncherSettingsFragment())
+            addToBackStack(null)
+            commit()
         }
     }
 
@@ -71,6 +87,9 @@ class GridAppFragment : Fragment() {
 
     private fun dataListener() {
         lifecycleScope.launch {
+            if (vm.resultCheckPassword.value) {
+                openSettings()
+            }
             vm.listApp.collect { value ->
                 adapter.submitList(value)
             }

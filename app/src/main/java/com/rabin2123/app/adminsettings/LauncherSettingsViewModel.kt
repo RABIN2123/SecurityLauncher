@@ -55,6 +55,13 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
         }
     }
 
+    fun checkPassword(password: String) {
+        viewModelScope.launch {
+            repository.checkAdminPassword(password)
+        }
+
+    }
+
     fun saveLauncherSettings(
         settings: SettingsObject,
         allowedAppList: List<AppObjectWithCheckBox>,

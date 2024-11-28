@@ -33,11 +33,7 @@ object SettingsPrefsBuilder {
             prefs[SettingsData.BLOCK_GPS] = false
             prefs[SettingsData.BLOCK_USB] = false
             prefs[SettingsData.BLOCK_CAMERA] = false
-            prefs[AES_KEY_ALIAS] = "some key"
         }
         return prefs
     }
-
-    const val AES_KEY_ALIAS = "aes_key_alias"
-    const val IV_KEY = "iv"
 }

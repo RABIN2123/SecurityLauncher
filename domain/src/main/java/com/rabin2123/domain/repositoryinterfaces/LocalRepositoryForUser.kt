@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalRepositoryForUser {
     fun getAllowedAppList(): Flow<List<AppObject>>
+    suspend fun checkAdminPassword(password: String): Boolean
 }

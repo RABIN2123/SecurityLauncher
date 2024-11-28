@@ -7,9 +7,6 @@ interface SettingsPrefs {
     suspend fun getSettingsList(): SettingsData
     suspend fun getAdminPassword(): ByteArray
     suspend fun setAdminPassword(password: ByteArray)
-    suspend fun getAesKeyAlias(): String
     suspend fun encryptPassword(password: String): ByteArray
     suspend fun decryptPassword(password: ByteArray): String
-    suspend fun getIv(): String
-    suspend fun setIv(iv: String)
 }

@@ -11,8 +11,11 @@ import android.provider.Settings
 import android.util.Log
 import com.rabin2123.app.MainActivity
 import com.rabin2123.app.services.adminreceiver.AdminReceiver
+import com.rabin2123.domain.models.SettingsObject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-
+//adb shell dpm set-device-owner com.rabin2123.securitylauncher/com.rabin2123.app.services.adminreceiver.AdminReceiver
 private const val TAG = "AdminUtils"
 
 sealed interface SettingsEvent {
@@ -29,6 +32,7 @@ class AdminUtils(private val context: Context) {
     private val myDeviceAdmin: ComponentName by lazy {
         ComponentName(context, AdminReceiver::class.java)
     }
+    private val _settingsList = MutableStateFlow<SettingsObject?>(null)
 
     fun setAdminPermission() {
         context.startActivity(

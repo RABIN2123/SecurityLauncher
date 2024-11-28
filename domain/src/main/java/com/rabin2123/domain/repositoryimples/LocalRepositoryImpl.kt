@@ -10,7 +10,10 @@ import com.rabin2123.domain.repositoryinterfaces.LocalRepositoryForAdmin
 import com.rabin2123.domain.repositoryinterfaces.LocalRepositoryForUser
 import kotlinx.coroutines.flow.Flow
 
-class LocalRepositoryImpl(private val localDataForAdmin: LocalDataForAdmin, private val localDataForUser : AllowedAppListHelper):
+class LocalRepositoryImpl(
+    private val localDataForAdmin: LocalDataForAdmin,
+    private val localDataForUser: AllowedAppListHelper
+) :
     LocalRepositoryForAdmin, LocalRepositoryForUser {
     override suspend fun getAllAppList(): List<AppObject> {
         return localDataForAdmin.getAppList().toDomain()
