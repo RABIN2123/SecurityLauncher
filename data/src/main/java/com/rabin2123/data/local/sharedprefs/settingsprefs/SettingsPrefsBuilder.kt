@@ -26,8 +26,9 @@ object SettingsPrefsBuilder {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
         if (!prefs.contains(SettingsData.ADMIN_PASSWORD)) {
-            prefs[SettingsData.ADMIN_PASSWORD] =
-                scope.launch { encryption.encryptionPassword("0000") }
+            scope.launch {
+                prefs[SettingsData.ADMIN_PASSWORD] = encryption.encryptionPassword("0000")
+            }
             prefs[SettingsData.ML_BAZAAR] = false
             prefs[SettingsData.BLOCK_SETTINGS] = false
             prefs[SettingsData.BLOCK_GPS] = false

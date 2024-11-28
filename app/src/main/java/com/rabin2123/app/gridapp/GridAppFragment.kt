@@ -33,7 +33,6 @@ class GridAppFragment : Fragment() {
                 startActivity(launchAppIntent)
         } else {
             callDialog()
-            //openSettings()
         }
     }
 
@@ -87,11 +86,13 @@ class GridAppFragment : Fragment() {
 
     private fun dataListener() {
         lifecycleScope.launch {
-            if (vm.resultCheckPassword.value) {
-                openSettings()
-            }
             vm.listApp.collect { value ->
                 adapter.submitList(value)
+            }
+        }
+        lifecycleScope.launch {
+            vm.resultCheckPassword.collect { value ->
+                if (value) openSettings()
             }
         }
     }
