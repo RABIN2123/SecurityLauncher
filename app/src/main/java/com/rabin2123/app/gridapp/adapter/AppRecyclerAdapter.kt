@@ -14,7 +14,11 @@ import com.rabin2123.app.R
 import com.rabin2123.app.databinding.FragmentIconAppBinding
 import com.rabin2123.domain.models.AppObject
 
-
+/**
+ * RecyclerAdapter for GridAppFragment
+ *
+ * @property onItemClicked opens the app you clicked on
+ */
 class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) :
     ListAdapter<AppObject, AppRecyclerAdapter.MyViewHolder>(
         ItemDiffCallBack()
@@ -48,6 +52,13 @@ class AppRecyclerAdapter(private val onItemClicked: (String) -> Unit) :
             }
         }
 
+        /**
+         * get icon for app
+         *
+         * @param packageName app package name
+         * @param context context
+         * @return icon for app
+         */
         private fun getAppIcon(packageName: String, context: Context): Drawable {
             val pm = context.packageManager
             val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

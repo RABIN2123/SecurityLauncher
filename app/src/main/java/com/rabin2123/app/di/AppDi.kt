@@ -10,11 +10,23 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(domainModule)
+
+    /**
+     * viewModel for GridAppFragment
+     */
     viewModel<GridAppViewModel> {
         GridAppViewModel(repository = get())
     }
+
+    /**
+     * viewModel for LauncherSettingsFragment
+     */
     viewModel<LauncherSettingsViewModel> {
         LauncherSettingsViewModel(repository = get())
     }
+
+    /**
+     * control admin/device-owner features
+     */
     single<AdminUtils> { AdminUtils(context = get()) }
 }

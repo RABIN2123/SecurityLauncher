@@ -2,7 +2,7 @@ package com.rabin2123.data.local
 
 import com.rabin2123.data.local.globalapplist.GlobalAppListData
 import com.rabin2123.data.local.globalapplist.models.AppObjectData
-import com.rabin2123.data.local.sharedprefs.models.SettingsData
+import com.rabin2123.data.local.sharedprefs.settingsprefs.models.SettingsData
 import com.rabin2123.data.local.sharedprefs.settingsprefs.SettingsPrefs
 
 class LocalDataForAdminImpl(

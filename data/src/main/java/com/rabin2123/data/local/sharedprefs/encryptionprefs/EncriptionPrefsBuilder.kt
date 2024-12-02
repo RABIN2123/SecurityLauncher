@@ -7,6 +7,12 @@ import androidx.security.crypto.MasterKey
 import com.rabin2123.data.local.sharedprefs.set
 
 object EncryptionPrefsBuilder {
+    /**
+     * get shared preferences instance with data for encryption/decryption
+     *
+     * @param context context
+     * @return shared preferences instance with data for encryption/decryption
+     */
     fun getEncryptionPrefs(context: Context): SharedPreferences {
         val masterKeyAlias = MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
         val prefs = EncryptedSharedPreferences.create(

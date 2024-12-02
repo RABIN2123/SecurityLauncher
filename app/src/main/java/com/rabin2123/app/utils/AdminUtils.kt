@@ -18,12 +18,42 @@ import kotlinx.coroutines.flow.MutableStateFlow
 private const val TAG = "AdminUtils"
 
 sealed interface SettingsEvent {
+    /**
+     * block/unblock any apps
+     * create for block device settings app for user
+     *
+     * @property appList list with apps for block
+     * @property state block/unblock apps
+     */
     class BlockApps(val appList: Array<String>, val state: Boolean) : SettingsEvent
+
+    /**
+     * block/unblock gps
+     *
+     * @property state block/unblock
+     */
     class BlockGps(val state: Boolean) : SettingsEvent
+
+    /**
+     * block/unblock usb connection
+     *
+     * @property state block/unblock
+     */
     class BlockUsb(val state: Boolean) : SettingsEvent
+
+    /**
+     * block/unblock camera
+     *
+     * @property state block/unblock
+     */
     class BlockCamera(val state: Boolean) : SettingsEvent
 }
 
+/**
+ * control admin/device-owner features
+ *
+ * @property context context
+ */
 class AdminUtils(private val context: Context) {
     private val devicePolicyManager: DevicePolicyManager by lazy {
         context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
@@ -31,8 +61,11 @@ class AdminUtils(private val context: Context) {
     private val myDeviceAdmin: ComponentName by lazy {
         ComponentName(context, AdminReceiver::class.java)
     }
-    private val _settingsList = MutableStateFlow<SettingsObject?>(null)
 
+    /**
+     * open settings to enable admin mode(not device owner)
+     *
+     */
     fun setAdminPermission() {
         context.startActivity(
             Intent().setComponent(
@@ -43,6 +76,11 @@ class AdminUtils(private val context: Context) {
         )
     }
 
+    /**
+     * set app how launcher on device
+     * work ONLY in device-owner mode
+     *
+     */
     fun setAppHowLauncher() {
         if (devicePolicyManager.isDeviceOwnerApp(context.packageName)) {
             val filter = IntentFilter(Intent.ACTION_MAIN)
@@ -57,16 +95,27 @@ class AdminUtils(private val context: Context) {
         }
     }
 
+    /**
+     * unset app how launcher on device
+     *NOT WORK
+     */
     fun unsetAppHowLauncher() {
         Log.d("TAG!", "unsetAppHowLauncher")
-
     }
 
-
+    /**
+     * get admin state(active/not active)
+     *
+     * @return state
+     */
     fun getStateAdminActive(): Boolean {
         return devicePolicyManager.isAdminActive(myDeviceAdmin)
     }
 
+    /**
+     * set quality password for user on device
+     *
+     */
     fun setPasswordQuality() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             devicePolicyManager.requiredPasswordComplexity =
@@ -90,6 +139,12 @@ class AdminUtils(private val context: Context) {
 //        return result ?: false
 //    }
 
+    /**
+     * event for work with device-owner settings
+     *
+     * @param event container with action
+     * @return true if the action is successful
+     */
     fun onEvent(event: SettingsEvent): Boolean {
         if (!devicePolicyManager.isDeviceOwnerApp(context.packageName)) return false
         return when (event) {
@@ -100,6 +155,13 @@ class AdminUtils(private val context: Context) {
         }
     }
 
+    /**
+     * block/unblock any apps
+     * create for block device settings app for user
+     *
+     * @param appList list with apps for block
+     * @param state block/unblock apps
+     */
     private fun blockApps(appList: Array<String>, state: Boolean): Boolean {
         return devicePolicyManager.setPackagesSuspended(
             myDeviceAdmin,
@@ -108,6 +170,11 @@ class AdminUtils(private val context: Context) {
         ).isEmpty()
     }
 
+    /**
+     * block/unblock usb connection
+     *
+     * @param state block/unblock
+     */
     private fun blockGps(state: Boolean): Boolean {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -137,6 +204,11 @@ class AdminUtils(private val context: Context) {
         }
     }
 
+    /**
+     * block/unblock usb connection
+     *
+     * @param state block/unblock
+     */
     private fun blockUsb(state: Boolean): Boolean {
         try {
             if (state) {
@@ -157,6 +229,11 @@ class AdminUtils(private val context: Context) {
         }
     }
 
+    /**
+     * block/unblock camera
+     *
+     * @param state block/unblock
+     */
     private fun blockCamera(state: Boolean): Boolean {
         try {
             devicePolicyManager.setCameraDisabled(myDeviceAdmin, state)

@@ -4,7 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
+/**
+ * Entity for allowedAppDatabase
+ *
+ * @property packageName app package name
+ * @property appName app name
+ */
 @Entity(tableName = AllowedAppEntity.TABLE_NAME)
 data class AllowedAppEntity (
     @PrimaryKey

@@ -11,6 +11,10 @@ import android.util.Log
 import androidx.core.app.ServiceCompat
 import com.rabin2123.app.services.filechecker.utils.NotificationHelper
 
+/**
+ * Foreground service with file Observer
+ *
+ */
 class FileSystemObserverService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -24,6 +28,10 @@ class FileSystemObserverService : Service() {
         return START_STICKY
     }
 
+    /**
+     * start foreground service and create file observer instance
+     *
+     */
     private fun start() {
         startAsForegroundService()
         val handler = Handler(Looper.getMainLooper())
@@ -32,6 +40,10 @@ class FileSystemObserverService : Service() {
         }, 30000)
     }
 
+    /**
+     * start foreground service
+     *
+     */
     private fun startAsForegroundService() {
         NotificationHelper.createNotificationChannel(this@FileSystemObserverService)
         Log.d("TAG!", "StartForegroundService")
@@ -47,6 +59,10 @@ class FileSystemObserverService : Service() {
         )
     }
 
+    /**
+     * start file observer
+     *
+     */
     private fun startFileObserver() {
         val fileObserver = FileSystemObserver(FileSystemObserver.DOWNLOADS_PATH)
         fileObserver.startWatching()

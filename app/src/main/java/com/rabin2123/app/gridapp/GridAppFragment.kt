@@ -23,6 +23,11 @@ class GridAppFragment : Fragment() {
         )
     }
 
+    /**
+     * opens the app you clicked on
+     *
+     * @param 'item' app package name
+     */
     private val onItemClicked: (String) -> Unit = { item ->
         if (item != "launcher_settings") {
             val launchAppIntent = context?.packageManager?.getLaunchIntentForPackage(item)
@@ -49,6 +54,10 @@ class GridAppFragment : Fragment() {
 //        dialog.show()
 //    }
 
+    /**
+     * open launcher settings
+     *
+     */
     private fun openSettings() {
         val fragmentManager = requireActivity().supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
@@ -75,14 +84,22 @@ class GridAppFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        dataListener()
+        dataObserver()
     }
 
+    /**
+     * initialization
+     *
+     */
     private fun initUi() {
         binding?.appList?.adapter = adapter
     }
 
-    private fun dataListener() {
+    /**
+     * data observer from modelView
+     *
+     */
+    private fun dataObserver() {
         lifecycleScope.launch {
             vm.listApp.collect { value ->
                 adapter.submitList(value)

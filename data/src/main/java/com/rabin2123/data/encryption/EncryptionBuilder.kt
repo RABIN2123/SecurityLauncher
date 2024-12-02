@@ -34,7 +34,12 @@ class EncryptionBuilder(
         }
     }
 
-
+    /**
+     * encrypt data
+     *
+     * @param password decrypted password
+     * @return
+     */
     override suspend fun encrypt(password: String): ByteArray {
         val key = getKey()
         val iv = getIv()
@@ -43,11 +48,21 @@ class EncryptionBuilder(
         return cipher.doFinal(password.toBase64())
     }
 
+    /**
+     * get or create secret key
+     *
+     * @return secret key
+     */
     private fun getKey(): SecretKey {
         val existingKey = keyStore.getEntry(aesKeyAlias, null) as? KeyStore.SecretKeyEntry
         return existingKey?.secretKey ?: createKey()
     }
 
+    /**
+     * create secret key
+     *
+     * @return secret key
+     */
     private fun createKey(): SecretKey {
         return KeyGenerator.getInstance(ALGORITHM).apply {
             init(
@@ -65,6 +80,11 @@ class EncryptionBuilder(
         }.generateKey()
     }
 
+    /**
+     * get initialization vector
+     *
+     * @return vector initialization
+     */
     private fun getIv(): IvParameterSpec {
         return if (ivPrefs != null) {
             IvParameterSpec(ivPrefs)
@@ -76,12 +96,24 @@ class EncryptionBuilder(
             generatedIv
         }
     }
+
+    /**
+     * create initialization vector
+     *
+     * @return initialization vector
+     */
     private fun generateIv(): IvParameterSpec {
         val ivBytes = ByteArray(IV_SIZE)
         SecureRandom().nextBytes(ivBytes)
         return IvParameterSpec(ivBytes)
     }
 
+    /**
+     * decrypt data
+     *
+     * @param encryptedPassword encrypted password
+     * @return decrypted password
+     */
     override suspend fun decrypt(encryptedPassword: ByteArray): String {
         val key = getKey()
         val iv = getIv()
@@ -100,10 +132,20 @@ class EncryptionBuilder(
 
 }
 
+/**
+ * conversion string to byteArray
+ *
+ * @return byteArray
+ */
 internal fun String.toBase64(): ByteArray {
     return Base64.decode(this, Base64.NO_WRAP or Base64.NO_PADDING)
 }
 
+/**
+ * conversion byteArray to string
+ *
+ * @return string
+ */
 internal fun ByteArray.encodeToString(): String {
     return Base64.encodeToString(this, Base64.NO_WRAP or Base64.NO_PADDING)
 }

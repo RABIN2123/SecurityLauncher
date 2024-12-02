@@ -7,6 +7,10 @@ import com.rabin2123.app.utils.AdminUtils
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+/**
+ * Need for work admin features
+ *
+ */
 class AdminReceiver : DeviceAdminReceiver(), KoinComponent {
 
     private val adminUtil: AdminUtils by inject()

@@ -5,11 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 
-class StartupReceiverFileSystem: BroadcastReceiver() {
+/**
+ * Broadcast receiver for start/stop foreground service with file Observer
+ *
+ */
+class StartupReceiverFileSystem : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("TAG!", "StartupReceiverFilesystem: ${intent?.action}")
-        context?.startForegroundService(Intent(context.applicationContext, FileSystemObserverService::class.java).also {
-            it.action = intent?.action
-        })
+        context?.startForegroundService(
+            Intent(
+                context.applicationContext,
+                FileSystemObserverService::class.java
+            ).also {
+                it.action = intent?.action
+            })
     }
 }

@@ -1,5 +1,14 @@
-package com.rabin2123.data.local.sharedprefs.models
+package com.rabin2123.data.local.sharedprefs.settingsprefs.models
 
+/**
+ * data class for launcher settings
+ *
+ * @property sendToMlBazaar turn on/off send sample to malwareBazaar
+ * @property blockSettings block/unblock ability to open settings
+ * @property blockGps block/unblock ability to use gps
+ * @property blockUsb block/unblock ability to use usb-connection for data exchange
+ * @property blockCamera block/unblock ability to use camera
+ */
 data class SettingsData(
     val sendToMlBazaar: Boolean,
     val blockSettings: Boolean,

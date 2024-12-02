@@ -3,7 +3,7 @@ package com.rabin2123.data.local.sharedprefs.settingsprefs
 import android.content.SharedPreferences
 import com.rabin2123.data.encryption.helper.EncryptionHelper
 import com.rabin2123.data.local.sharedprefs.get
-import com.rabin2123.data.local.sharedprefs.models.SettingsData
+import com.rabin2123.data.local.sharedprefs.settingsprefs.models.SettingsData
 import com.rabin2123.data.local.sharedprefs.set
 
 class SettingsPrefsImpl(

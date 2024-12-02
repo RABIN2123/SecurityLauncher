@@ -8,6 +8,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * ModelView for GridAppFragment
+ *
+ * @property repository repository for local data for user
+ */
 class GridAppViewModel(private val repository: LocalRepositoryForUser) : ViewModel() {
 
     private val _listApp: StateFlow<List<AppObject>> = repository

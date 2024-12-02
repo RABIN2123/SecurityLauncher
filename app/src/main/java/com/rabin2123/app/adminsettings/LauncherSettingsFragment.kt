@@ -1,6 +1,5 @@
 package com.rabin2123.app.adminsettings
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.adminsettings.adapter.GlobalAppListRecyclerAdapter
 import com.rabin2123.app.databinding.FragmentLauncherSettingsBinding
-import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.domain.models.SettingsObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
@@ -19,9 +17,7 @@ class LauncherSettingsFragment : Fragment() {
     private val vm: LauncherSettingsViewModel by viewModel()
 
     private val adapter by lazy {
-        GlobalAppListRecyclerAdapter(
-
-        )
+        GlobalAppListRecyclerAdapter()
     }
 
     private var binding: FragmentLauncherSettingsBinding? = null
@@ -43,6 +39,10 @@ class LauncherSettingsFragment : Fragment() {
         switchStateObserver()
     }
 
+    /**
+     * initialization
+     *
+     */
     private fun initUi() {
         binding?.apply {
             globalAppList.adapter = adapter
@@ -54,13 +54,21 @@ class LauncherSettingsFragment : Fragment() {
                     blockUsb = switchBlockUsbAccess.isChecked,
                     blockCamera = switchBlockCamera.isChecked
                 )
-                vm.saveLauncherSettings(settings, adapter.getAllowedAppList(), requireContext().applicationContext)
+                vm.saveLauncherSettings(
+                    settings,
+                    adapter.getAllowedAppList(),
+                    requireContext().applicationContext
+                )
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             buttonExitLauncherSetting.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
         }
     }
 
+    /**
+     * data observer from viewModel
+     *
+     */
     private fun dataObserver() {
         lifecycleScope.launch {
             vm.listApp.collect { value ->
@@ -69,6 +77,10 @@ class LauncherSettingsFragment : Fragment() {
         }
     }
 
+    /**
+     * state observer from switch from viewModel
+     *
+     */
     private fun switchStateObserver() {
         lifecycleScope.launch {
             vm.settingList.collect { data ->

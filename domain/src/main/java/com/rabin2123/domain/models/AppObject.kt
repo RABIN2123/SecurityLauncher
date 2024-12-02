@@ -5,11 +5,22 @@ import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * data class for app on phone
+ *
+ * @property name app name
+ * @property packageName app package name
+ */
 data class AppObject(
     val name: String,
     val packageName: String
 )
 
+/**
+ * conversion List<AppObjectData> to List<AppObject>
+ *
+ * @return same data but with List<AppObject> of type
+ */
 fun List<AppObjectData>.toDomain(): List<AppObject> {
     return this.map { data ->
         AppObject(
@@ -19,6 +30,11 @@ fun List<AppObjectData>.toDomain(): List<AppObject> {
     }
 }
 
+/**
+ * conversion Flow<List<AllowedAppEntity>> to Flow<List<AppObject>>
+ *
+ * @return same data but with Flow<List<AppObject>> of type
+ */
 fun Flow<List<AllowedAppEntity>>.toDomain(): Flow<List<AppObject>> {
     return this.map { flow ->
         flow.map { data ->
@@ -30,6 +46,11 @@ fun Flow<List<AllowedAppEntity>>.toDomain(): Flow<List<AppObject>> {
     }
 }
 
+/**
+ * conversion List<appObject> to List<AllowedAppEntity>
+ *
+ * @return same data but with List<AllowedAppEntity>
+ */
 fun List<AppObject>.toData(): List<AllowedAppEntity> {
     return this.map { data ->
         AllowedAppEntity(

@@ -22,7 +22,11 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-
+/**
+ * viewModel for LauncherSettingsFragment
+ *
+ * @property repository repository with admin access
+ */
 class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin) : ViewModel(),
     KoinComponent {
     private val adminUtils: AdminUtils by inject()
@@ -47,14 +51,22 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
         initData()
     }
 
+    /**
+     * initialization starting data
+     *
+     */
     private fun initData() {
-
         viewModelScope.launch(Dispatchers.IO) {
             _allListApp.update { repository.getAllAppList() }
             _settingsList.update { repository.getSettingsList() }
         }
     }
 
+    /**
+     * Send to comparison entered password with password in database
+     *
+     * @param password entered password
+     */
     fun checkPassword(password: String) {
         viewModelScope.launch {
             repository.checkAdminPassword(password)
@@ -62,6 +74,13 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
 
     }
 
+    /**
+     * Save launcher settings
+     *
+     * @param settings new settings
+     * @param allowedAppList new allowed app list
+     * @param applicationContext application context
+     */
     fun saveLauncherSettings(
         settings: SettingsObject,
         allowedAppList: List<AppObjectWithCheckBox>,
@@ -81,6 +100,12 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
         }
     }
 
+    /**
+     * applying new settings
+     *
+     * @param newSettings new settings
+     * @param applicationContext application context
+     */
     private fun setSettings(
         newSettings: SettingsObject,
         applicationContext: Context

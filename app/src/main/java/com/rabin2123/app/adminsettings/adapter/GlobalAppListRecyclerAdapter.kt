@@ -25,6 +25,11 @@ class GlobalAppListRecyclerAdapter() :
         holder.bind(currentList[position])
     }
 
+    /**
+     * get new allowed app list
+     *
+     * @return allowed app list
+     */
     fun getAllowedAppList(): List<AppObjectWithCheckBox> {
         return currentList.filterIndexed{index, _ -> checkedStates[index, false]}
     }

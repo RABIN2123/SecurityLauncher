@@ -5,12 +5,20 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.rabin2123.data.encryption.helper.EncryptionHelper
-import com.rabin2123.data.local.sharedprefs.models.SettingsData
+import com.rabin2123.data.local.sharedprefs.settingsprefs.models.SettingsData
 import com.rabin2123.data.local.sharedprefs.set
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 object SettingsPrefsBuilder {
+    /**
+     * get shared preferences instance with settings data
+     *
+     * @param context context
+     * @param encryption encryption for encryption/decryption shared preferences
+     * @param scope Coroutine scope
+     * @return shared preferences instance with settings
+     */
     fun getSettingsPrefs(
         context: Context,
         encryption: EncryptionHelper,
