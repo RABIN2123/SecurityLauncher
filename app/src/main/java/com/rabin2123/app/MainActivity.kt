@@ -1,7 +1,6 @@
 package com.rabin2123.app
 
 import android.Manifest.permission
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -37,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                 0
             }
         )
-
+        //adminUtils.presenceOfPassword()
+        adminUtils.setPasswordQuality()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(
                 arrayOf(

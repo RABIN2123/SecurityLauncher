@@ -13,7 +13,6 @@ import com.rabin2123.app.MainActivity
 import com.rabin2123.app.services.adminreceiver.AdminReceiver
 import com.rabin2123.domain.models.SettingsObject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 //adb shell dpm set-device-owner com.rabin2123.securitylauncher/com.rabin2123.app.services.adminreceiver.AdminReceiver
 private const val TAG = "AdminUtils"
@@ -67,6 +66,29 @@ class AdminUtils(private val context: Context) {
     fun getStateAdminActive(): Boolean {
         return devicePolicyManager.isAdminActive(myDeviceAdmin)
     }
+
+    fun setPasswordQuality() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            devicePolicyManager.requiredPasswordComplexity =
+                DevicePolicyManager.PASSWORD_COMPLEXITY_MEDIUM
+        } else {
+            devicePolicyManager.setPasswordQuality(
+                myDeviceAdmin,
+                DevicePolicyManager.PASSWORD_COMPLEXITY_MEDIUM
+            )
+        }
+    }
+
+
+//    fun presenceOfPassword(): Boolean {
+//        var result: Boolean? = null
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//            devicePolicyManager.uses
+//            result = devicePolicyManager.isActivePasswordSufficient
+//        }
+//        Log.d(TAG, "PresenceOfPassword: $result")
+//        return result ?: false
+//    }
 
     fun onEvent(event: SettingsEvent): Boolean {
         if (!devicePolicyManager.isDeviceOwnerApp(context.packageName)) return false

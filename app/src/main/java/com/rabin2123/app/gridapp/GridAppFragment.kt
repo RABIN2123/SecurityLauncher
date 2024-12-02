@@ -1,8 +1,6 @@
 package com.rabin2123.app.gridapp
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.R
 import com.rabin2123.app.adminsettings.LauncherSettingsFragment
-import com.rabin2123.app.databinding.DialogLoginWindowBinding
 import com.rabin2123.app.databinding.FragmentGridAppBinding
 import com.rabin2123.app.gridapp.adapter.AppRecyclerAdapter
 import kotlinx.coroutines.launch
@@ -32,24 +29,25 @@ class GridAppFragment : Fragment() {
             if (launchAppIntent != null)
                 startActivity(launchAppIntent)
         } else {
-            callDialog()
+//            callDialog()
+            openSettings()
         }
     }
 
-    private fun callDialog() {
-        val dialog = AlertDialog.Builder(requireContext())
-        val binding = DialogLoginWindowBinding.inflate(layoutInflater).apply {
-            buttonLogin.setOnClickListener {
-                vm.checkPassword(editTextPassword.text.toString())
-            }
-            buttonCancel.setOnClickListener {
-
-            }
-
-        }
-        dialog.setView(binding.root).create()
-        dialog.show()
-    }
+//    private fun callDialog() {
+//        val dialog = AlertDialog.Builder(requireContext())
+//        val binding = DialogLoginWindowBinding.inflate(layoutInflater).apply {
+//            buttonLogin.setOnClickListener {
+//                vm.checkPassword(editTextPassword.text.toString())
+//            }
+//            buttonCancel.setOnClickListener {
+//
+//            }
+//
+//        }
+//        dialog.setView(binding.root).create()
+//        dialog.show()
+//    }
 
     private fun openSettings() {
         val fragmentManager = requireActivity().supportFragmentManager
@@ -90,10 +88,10 @@ class GridAppFragment : Fragment() {
                 adapter.submitList(value)
             }
         }
-        lifecycleScope.launch {
-            vm.resultCheckPassword.collect { value ->
-                if (value) openSettings()
-            }
-        }
+//        lifecycleScope.launch {
+//            vm.resultCheckPassword.collect { value ->
+//                if (value) openSettings()
+//            }
+//        }
     }
 }
