@@ -10,12 +10,16 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import com.rabin2123.app.services.filechecker.utils.NotificationHelper
+import org.koin.core.component.get
+import org.koin.core.component.KoinComponent
 
 /**
  * Foreground service with file Observer
  *
  */
-class FileSystemObserverService : Service() {
+class FileSystemObserverService : Service(), KoinComponent {
+
+    private val notificationHelper: NotificationHelper = get()
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -45,12 +49,12 @@ class FileSystemObserverService : Service() {
      *
      */
     private fun startAsForegroundService() {
-        NotificationHelper.createNotificationChannel(this@FileSystemObserverService)
+        notificationHelper.createNotificationChannel()
         Log.d("TAG!", "StartForegroundService")
         ServiceCompat.startForeground(
             this@FileSystemObserverService,
             1,
-            NotificationHelper.buildNotification(this@FileSystemObserverService),
+            notificationHelper.buildNotification(),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             } else {

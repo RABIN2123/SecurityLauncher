@@ -8,11 +8,13 @@ import android.content.Context
 import androidx.core.app.NotificationCompat
 import com.rabin2123.app.R
 
-internal object NotificationHelper {
-    private const val NOTIFICATION_CHANNEL_ID = "test_channel"
+class NotificationHelper(private val context: Context) {
 
-    fun createNotificationChannel(context: Context) {
-        val notificationManager = context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager =
+        context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+
+    fun createNotificationChannel() {
+
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             "file_checker_channel",
@@ -21,12 +23,20 @@ internal object NotificationHelper {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun buildNotification(context: Context): Notification {
+    fun buildNotification(contentText: String = "Work"): Notification {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("File Protector")
-            .setContentText("Work")
+            .setContentText(contentText)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
+    }
+
+    fun updateNotification() {
+       notificationManager.notify(1, buildNotification("Bad file detected"))
+    }
+
+    companion object {
+        private const val NOTIFICATION_CHANNEL_ID = "test_channel"
     }
 }

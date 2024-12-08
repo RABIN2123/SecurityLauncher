@@ -4,6 +4,7 @@ import android.os.Environment
 import android.os.FileObserver
 import android.util.Log
 import com.rabin2123.app.services.filechecker.utils.HashUtils
+import com.rabin2123.app.services.filechecker.utils.NotificationHelper
 import com.rabin2123.domain.repositoryinterfaces.RemoteRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ import org.koin.core.component.inject
  * @param scanPath path to folder
  */
 class FileSystemObserver(scanPath: String) : FileObserver(scanPath, CLOSE_WRITE), KoinComponent {
-
+    private val notificationHelper: NotificationHelper by inject()
     private val remoteRepository: RemoteRepository by inject()
 
     override fun onEvent(event: Int, path: String?) {
@@ -26,9 +27,11 @@ class FileSystemObserver(scanPath: String) : FileObserver(scanPath, CLOSE_WRITE)
         if (hash == HASH_OF_EMPTY_FILE) return
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         scope.launch {
-            Log.d("TAG!", "Result from bazaar: ${remoteRepository.getInfoAboutHashFile(hash)}")
+            val test = remoteRepository.getInfoAboutHashFile(hash)
+            Log.d("TAG!", "Result from bazaar: $test")
+            if (test) notificationHelper.updateNotification()
         }
-        //TODO сделать отправку компании инфы об файле если он вирус 
+
     }
 
     override fun startWatching() {
