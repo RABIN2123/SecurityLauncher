@@ -32,11 +32,11 @@ class InputPasswordDialog(private val state: String) : DialogFragment() {
                 }
                 buttonLogin.setOnClickListener {
                     if (state == STATE_LOGIN) {
-                        vm.checkPassword(editTextPassword.text.toString())
+                        vm.checkPassword(editTextPassword.text.toString().trim())
                     } else {
                         vm.changePassword(
-                            editTextPassword.text.toString(),
-                            editTextNewPassword.text.toString()
+                            editTextPassword.text.toString().trim(),
+                            editTextNewPassword.text.toString().trim()
                         )
                     }
 

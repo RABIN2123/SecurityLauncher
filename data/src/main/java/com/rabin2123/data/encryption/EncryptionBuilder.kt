@@ -25,15 +25,8 @@ class EncryptionBuilder(
     private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
         load(null)
     }
-    private var aesKeyAlias = ""
-    private var ivPrefs: ByteArray? = null
+    private var aesKeyAlias = prefs.getAesKeyAlias()
 
-    init {
-        scope.launch {
-            aesKeyAlias = prefs.getAesKeyAlias()
-            ivPrefs = prefs.getKeyIv()
-        }
-    }
 
     /**
      * encrypt data
@@ -65,6 +58,7 @@ class EncryptionBuilder(
      * @return secret key
      */
     private fun createKey(): SecretKey {
+        Log.d("TAG!", "createKey")
         return KeyGenerator.getInstance(ALGORITHM).apply {
             init(
                 KeyGenParameterSpec.Builder(
@@ -87,9 +81,11 @@ class EncryptionBuilder(
      * @return vector initialization
      */
     private fun getIv(): IvParameterSpec {
+        val ivPrefs: ByteArray? = prefs.getKeyIv()
         return if (ivPrefs != null) {
             IvParameterSpec(ivPrefs)
         } else {
+            Log.d("TAG!", "Generate IV")
             val generatedIv = generateIv()
             scope.launch {
                 prefs.setKeyIv(generatedIv.iv)

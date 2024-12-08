@@ -6,14 +6,14 @@ interface EncryptionPrefs {
      *
      * @return aes key alias
      */
-    suspend fun getAesKeyAlias(): String
+    fun getAesKeyAlias(): String
 
     /**
      * get key for vector initialization
      *
      * @return key for vector initialization
      */
-    suspend fun getKeyIv(): ByteArray?
+    fun getKeyIv(): ByteArray?
 
     /**
      * set key for vector initialization

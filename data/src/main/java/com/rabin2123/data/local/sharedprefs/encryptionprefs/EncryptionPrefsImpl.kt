@@ -6,11 +6,11 @@ import com.rabin2123.data.local.sharedprefs.set
 
 
 class EncryptionPrefsImpl(private val prefs: SharedPreferences): EncryptionPrefs {
-    override suspend fun getAesKeyAlias(): String {
+    override fun getAesKeyAlias(): String {
         return prefs[EncryptionPrefsBuilder.AES_KEY_ALIAS]
     }
 
-    override suspend fun getKeyIv(): ByteArray? {
+    override fun getKeyIv(): ByteArray? {
         return prefs[EncryptionPrefsBuilder.IV_KEY]
     }
 
