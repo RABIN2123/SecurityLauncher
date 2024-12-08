@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rabin2123.app.R
 import com.rabin2123.app.adminsettings.models.AppObjectWithCheckBox
 import com.rabin2123.app.services.filechecker.FileSystemObserverService
 import com.rabin2123.app.utils.AdminUtils
@@ -47,6 +48,10 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
     private val _settingsList = MutableStateFlow<SettingsObject?>(null)
     val settingList: StateFlow<SettingsObject?> = _settingsList
 
+    private val _resultCheckPassword: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val resultCheckPassword: StateFlow<Boolean> = _resultCheckPassword
+
+
     init {
         initData()
     }
@@ -68,10 +73,21 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
      * @param password entered password
      */
     fun checkPassword(password: String) {
-        viewModelScope.launch {
-            repository.checkAdminPassword(password)
+        viewModelScope.launch(Dispatchers.IO) {
+            _resultCheckPassword.update {
+                repository.checkAdminPassword(password)
+            }
+
         }
 
+    }
+
+    fun changePassword(oldPassword: String, newPassword: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _resultCheckPassword.update {
+                repository.setAdminPassword(oldPassword, newPassword)
+            }
+        }
     }
 
     /**
@@ -119,7 +135,7 @@ class LauncherSettingsViewModel(private val repository: LocalRepositoryForAdmin)
                     )
                         .setClassName(
                             applicationContext.packageName,
-                            "com.rabin2123.app.services.filechecker.StartupReceiverFileSystem"
+                            applicationContext.getString(R.string.file_checker_class_name)
                         )
                 )
             }

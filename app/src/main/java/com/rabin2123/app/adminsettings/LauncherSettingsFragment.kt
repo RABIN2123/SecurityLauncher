@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.rabin2123.app.adminsettings.adapter.GlobalAppListRecyclerAdapter
+import com.rabin2123.app.alertdialogs.InputPasswordDialog
 import com.rabin2123.app.databinding.FragmentLauncherSettingsBinding
 import com.rabin2123.domain.models.SettingsObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,6 +63,12 @@ class LauncherSettingsFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             buttonExitLauncherSetting.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
+            buttonChangeAdminPassword.setOnClickListener {
+                InputPasswordDialog(InputPasswordDialog.STATE_CHANGE).show(
+                    childFragmentManager,
+                    InputPasswordDialog.TAG
+                )
+            }
         }
     }
 

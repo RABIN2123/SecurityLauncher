@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             }
         )
         //adminUtils.presenceOfPassword()
-        adminUtils.setPasswordQuality()
+        //adminUtils.setPasswordQuality()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(
                 arrayOf(

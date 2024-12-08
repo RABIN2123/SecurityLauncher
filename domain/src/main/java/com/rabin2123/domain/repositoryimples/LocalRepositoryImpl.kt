@@ -1,5 +1,7 @@
 package com.rabin2123.domain.repositoryimples
 
+import android.util.Log
+import com.rabin2123.data.encryption.encodeToString
 import com.rabin2123.data.local.LocalDataForAdmin
 import com.rabin2123.data.local.roomdb.allowedapplistdb.AllowedAppListHelper
 import com.rabin2123.domain.models.AppObject
@@ -43,11 +45,21 @@ class LocalRepositoryImpl(
         localDataForAdmin.updateSettingsList(settingsList.toData())
     }
 
-    override suspend fun setAdminPassword(password: String) {
-        localDataForAdmin.setAdminPassword(localDataForAdmin.encryptPassword(password))
+    override suspend fun setAdminPassword(oldPassword: String, newPassword: String): Boolean {
+        if (checkAdminPassword(oldPassword)) {
+            return false
+        }
+        localDataForAdmin.setAdminPassword(localDataForAdmin.encryptPassword(newPassword))
+        return true
     }
 
     override suspend fun checkAdminPassword(password: String): Boolean {
+        Log.d(
+            "TAG!",
+            "password1: ${
+                localDataForAdmin.getAdminPassword().encodeToString()
+            }; password2: ${localDataForAdmin.encryptPassword(password).encodeToString()}"
+        )
         return localDataForAdmin.getAdminPassword()
             .contentEquals(localDataForAdmin.encryptPassword(password))
     }

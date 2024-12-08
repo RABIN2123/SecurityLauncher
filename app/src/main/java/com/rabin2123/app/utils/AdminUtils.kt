@@ -88,10 +88,11 @@ class AdminUtils(private val context: Context) {
             filter.addCategory(Intent.CATEGORY_DEFAULT)
             val activity = ComponentName(context, MainActivity::class.java)
             devicePolicyManager.addPersistentPreferredActivity(myDeviceAdmin, filter, activity)
-            devicePolicyManager.addUserRestriction(
-                myDeviceAdmin,
-                UserManager.DISALLOW_USER_SWITCH
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                devicePolicyManager.addUserRestriction(
+                    myDeviceAdmin,
+                    UserManager.DISALLOW_USER_SWITCH
+                )
         }
     }
 

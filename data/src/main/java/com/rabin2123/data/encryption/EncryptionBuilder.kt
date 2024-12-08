@@ -4,6 +4,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.KeyProperties.BLOCK_MODE_CBC
 import android.util.Base64
+import android.util.Log
 import com.rabin2123.data.local.sharedprefs.encryptionprefs.EncryptionPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ private const val IV_SIZE = 16
 class EncryptionBuilder(
     private val prefs: EncryptionPrefs,
     private val scope: CoroutineScope
-): AesEncryption {
+) : AesEncryption {
 
     private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
         load(null)
@@ -146,6 +147,6 @@ internal fun String.toBase64(): ByteArray {
  *
  * @return string
  */
-internal fun ByteArray.encodeToString(): String {
+fun ByteArray.encodeToString(): String {
     return Base64.encodeToString(this, Base64.NO_WRAP or Base64.NO_PADDING)
 }

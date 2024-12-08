@@ -19,16 +19,4 @@ class GridAppViewModel(private val repository: LocalRepositoryForUser) : ViewMod
         .getAllowedAppList()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
     val listApp = _listApp
-//    private val _resultCheckPassword: MutableStateFlow<Boolean> = MutableStateFlow(false)
-//    val resultCheckPassword: StateFlow<Boolean> = _resultCheckPassword
-
-//    fun checkPassword(password: String) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            _resultCheckPassword.update {
-//                repository.checkAdminPassword(
-//                    password
-//                )
-//            }
-//        }
-//    }
 }

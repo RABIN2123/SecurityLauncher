@@ -56,9 +56,11 @@ interface LocalRepositoryForAdmin {
     /**
      * set new admin password
      *
-     * @param password new admin password
+     * @param oldPassword old admin password
+     * @param newPassword new admin password
+     * @return state for update password
      */
-    suspend fun setAdminPassword(password: String)
+    suspend fun setAdminPassword(oldPassword: String, newPassword: String): Boolean
 
     /**
      * comparison of the entered password with from the database

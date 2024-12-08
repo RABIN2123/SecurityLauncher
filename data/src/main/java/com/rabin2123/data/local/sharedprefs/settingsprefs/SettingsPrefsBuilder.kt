@@ -2,8 +2,10 @@ package com.rabin2123.data.local.sharedprefs.settingsprefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.rabin2123.data.encryption.encodeToString
 import com.rabin2123.data.encryption.helper.EncryptionHelper
 import com.rabin2123.data.local.sharedprefs.settingsprefs.models.SettingsData
 import com.rabin2123.data.local.sharedprefs.set
@@ -35,7 +37,9 @@ object SettingsPrefsBuilder {
         )
         if (!prefs.contains(SettingsData.ADMIN_PASSWORD)) {
             scope.launch {
-                prefs[SettingsData.ADMIN_PASSWORD] = encryption.encryptionPassword("0000")
+                val test = encryption.encryptionPassword("0000")
+                Log.d("TAG!", "PASSWORD ${test.encodeToString()}")
+                prefs[SettingsData.ADMIN_PASSWORD] = test
             }
             prefs[SettingsData.ML_BAZAAR] = false
             prefs[SettingsData.BLOCK_SETTINGS] = false
