@@ -7,6 +7,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.rabin2123.data.encryption.helper.EncryptionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.sqlcipher.database.SupportFactory
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.security.SecureRandom
 
 object AllowedAppDatabaseBuilder {
     @Volatile
@@ -33,6 +38,7 @@ object AllowedAppDatabaseBuilder {
                     AllowedAppListDatabase::class.java,
                     "database.db"
                 )
+                .openHelperFactory(SupportFactory(getPassword(context = context,encryption = encryption)))
                 .addCallback(AllowedAppListDatabaseCallback(scope))
                 .build()
             INSTANCE = instance
@@ -67,5 +73,33 @@ object AllowedAppDatabaseBuilder {
                 }
             }
         }
+    }
+
+    private fun getPassword(
+        context: Context,
+        encryption: EncryptionHelper
+    ): ByteArray {
+        val file = File(context.filesDir, "RoomDb")
+        return if (file.exists()) {
+            encryption.decryptionPassword(FileInputStream(file))
+        } else {
+            val password = generatePassword()
+            FileOutputStream(file).use { stream ->
+                stream.write(encryption.encryptionPassword(password))
+            }
+            password
+        }
+    }
+
+    private fun generatePassword(): ByteArray {
+        val result = ByteArray(32)
+
+        SecureRandom().nextBytes(result)
+
+        while (result.contains(0)) {
+            SecureRandom().nextBytes(result)
+        }
+
+        return result
     }
 }

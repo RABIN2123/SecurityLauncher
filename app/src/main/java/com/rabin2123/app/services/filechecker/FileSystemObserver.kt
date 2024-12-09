@@ -27,7 +27,7 @@ class FileSystemObserver(scanPath: String) : FileObserver(scanPath, CLOSE_WRITE)
         if (hash == HASH_OF_EMPTY_FILE) return
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         scope.launch {
-            val test = remoteRepository.getInfoAboutHashFile(hash)
+            val test = remoteRepository.getInfoAboutHashFile(hashSample = hash)
             Log.d("TAG!", "Result from bazaar: $test")
             if (test) notificationHelper.updateNotification()
         }

@@ -1,5 +1,7 @@
 package com.rabin2123.data.encryption.helper
 
+import java.io.InputStream
+
 interface EncryptionHelper {
     /**
      * encrypt new or input password
@@ -7,7 +9,8 @@ interface EncryptionHelper {
      * @param password
      * @return encrypted password
      */
-    suspend fun encryptionPassword(password: String): ByteArray
+    fun encryptionPassword(password: String): ByteArray
+    fun encryptionPassword(password: ByteArray): ByteArray
 
     /**
      * decrypt password
@@ -16,5 +19,6 @@ interface EncryptionHelper {
      * @param password encrypted password
      * @return decrypted password
      */
-    suspend fun decryptionPassword(password: ByteArray): String
+    fun decryptionPassword(password: ByteArray): String
+    fun decryptionPassword(inputStream: InputStream): ByteArray
 }

@@ -11,8 +11,6 @@ import android.provider.Settings
 import android.util.Log
 import com.rabin2123.app.MainActivity
 import com.rabin2123.app.services.adminreceiver.AdminReceiver
-import com.rabin2123.domain.models.SettingsObject
-import kotlinx.coroutines.flow.MutableStateFlow
 
 //adb shell dpm set-device-owner com.rabin2123.securitylauncher/com.rabin2123.app.services.adminreceiver.AdminReceiver
 private const val TAG = "AdminUtils"
@@ -128,17 +126,6 @@ class AdminUtils(private val context: Context) {
             )
         }
     }
-
-
-//    fun presenceOfPassword(): Boolean {
-//        var result: Boolean? = null
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            devicePolicyManager.uses
-//            result = devicePolicyManager.isActivePasswordSufficient
-//        }
-//        Log.d(TAG, "PresenceOfPassword: $result")
-//        return result ?: false
-//    }
 
     /**
      * event for work with device-owner settings

@@ -6,7 +6,7 @@ import com.rabin2123.domain.repositoryinterfaces.RemoteRepository
 
 class RemoteRepositoryImpl(private val remoteData: ApiHelper): RemoteRepository {
     override suspend fun getInfoAboutHashFile(hashSample: String): Boolean {
-        Log.d("TAG!", "hashSample in RemoteRepository: $hashSample")
-        return remoteData.compareHash(hashSample).queryStatus == "ok"
+        Log.d("TAG!", "RemoteRepositoryImpl/getInfoAboutHashFile: $hashSample")
+        return remoteData.compareHash(hashFile = hashSample).queryStatus == "ok"
     }
 }

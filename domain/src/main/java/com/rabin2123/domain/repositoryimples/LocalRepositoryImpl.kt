@@ -46,7 +46,7 @@ class LocalRepositoryImpl(
     }
 
     override suspend fun setAdminPassword(oldPassword: String, newPassword: String): Boolean {
-        if (checkAdminPassword(oldPassword)) {
+        if (!checkAdminPassword(oldPassword)) {
             return false
         }
         localDataForAdmin.setAdminPassword(localDataForAdmin.encryptPassword(newPassword))

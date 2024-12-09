@@ -1,5 +1,7 @@
 package com.rabin2123.data.encryption
 
+import java.io.InputStream
+
 interface AesEncryption {
     /**
      * Encrypts password
@@ -7,12 +9,16 @@ interface AesEncryption {
      * @param password decrypted password for admin
      * @return encrypted password
      */
-    suspend fun encrypt(password: String): ByteArray
+    fun encrypt(password: String): ByteArray
+
+    fun encrypt(password: ByteArray): ByteArray
     /**
      * Decrypts password
      *
      * @param encryptedPassword encrypted password for admin
      * @return decrypted password for admin
      */
-    suspend fun decrypt(encryptedPassword: ByteArray): String
+    fun decrypt(encryptedPassword: ByteArray): String
+
+    fun decrypt(inputStream: InputStream): ByteArray
 }

@@ -8,6 +8,7 @@ import android.util.Log
 import com.rabin2123.data.local.sharedprefs.encryptionprefs.EncryptionPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.io.InputStream
 import java.security.KeyStore
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -34,12 +35,16 @@ class EncryptionBuilder(
      * @param password decrypted password
      * @return
      */
-    override suspend fun encrypt(password: String): ByteArray {
+    override fun encrypt(password: String): ByteArray {
+        return encrypt(password.toBase64())
+    }
+
+    override fun encrypt(password: ByteArray): ByteArray {
         val key = getKey()
         val iv = getIv()
         val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "AndroidKeyStoreBCWorkaround")
         cipher.init(Cipher.ENCRYPT_MODE, key, iv)
-        return cipher.doFinal(password.toBase64())
+        return cipher.doFinal(password)
     }
 
     /**
@@ -111,12 +116,24 @@ class EncryptionBuilder(
      * @param encryptedPassword encrypted password
      * @return decrypted password
      */
-    override suspend fun decrypt(encryptedPassword: ByteArray): String {
+    override fun decrypt(encryptedPassword: ByteArray): String {
         val key = getKey()
         val iv = getIv()
         val cipher = Cipher.getInstance(TRANSFORMATION, "AndroidKeyStoreBCWorkaround")
         cipher.init(Cipher.DECRYPT_MODE, key, iv)
         return cipher.doFinal(encryptedPassword).encodeToString()
+    }
+
+    override fun decrypt(inputStream: InputStream): ByteArray {
+        val key = getKey()
+        val iv = getIv()
+        val cipher = Cipher.getInstance(TRANSFORMATION, "AndroidKeyStoreBCWorkaround")
+        cipher.init(Cipher.DECRYPT_MODE, key, iv)
+        return inputStream.use { stream ->
+            val encryptedBytes = ByteArray(size = stream.read())
+            stream.read(encryptedBytes)
+            cipher.doFinal(encryptedBytes)
+        }
     }
 
     companion object {
